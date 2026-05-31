@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.1">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'; min-height: 15.0px}
+    span.s1 {font: 13.0px 'Zapf Dingbats'}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ko"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width,initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;📚 Sehee Tutor Dashboard&lt;/title&gt;</p>
+<p class="p1">&lt;script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">*{box-sizing:border-box;margin:0;padding:0;}</p>
+<p class="p1">body{background:#F4F5F7;font-family:'Inter','Noto Sans KR',sans-serif;color:#1A202C;min-height:100vh;}</p>
+<p class="p1">::placeholder{color:#C4CCDA;}</p>
+<p class="p1">input,textarea,button,select{font-family:inherit;}</p>
+<p class="p1">input:focus,textarea:focus,select:focus{outline:none;border-color:#6366F1!important;box-shadow:0 0 0 3px rgba(99,102,241,.1)!important;}</p>
+<p class="p1">button{cursor:pointer;transition:all .15s;}</p>
+<p class="p1">button:active{transform:scale(.97);}</p>
+<p class="p1">::-webkit-scrollbar{width:5px;height:5px;}</p>
+<p class="p1">::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}</p>
+<p class="p1">a{color:#6366F1;}</p>
+<p class="p1">input[type=date]{color-scheme:light;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── HEADER ── */</p>
+<p class="p1">.hdr{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;position:sticky;top:0;z-index:200;box-shadow:0 1px 6px rgba(0,0,0,.05);}</p>
+<p class="p1">.hdr-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:14px;height:62px;}</p>
+<p class="p1">.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}</p>
+<p class="p1">.logo-title{font-size:18px;font-weight:800;color:#1A202C;letter-spacing:-.3px;}</p>
+<p class="p1">.logo-sub{font-size:11px;color:#94A3B8;font-weight:500;}</p>
+<p class="p1">.sync-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid;}</p>
+<p class="p1">.sync-pill.local{background:#F8FAFC;border-color:#E2E8F0;color:#64748B;}</p>
+<p class="p1">.sync-pill.saving{background:#FFFBEB;border-color:#FCD34D;color:#92400E;}</p>
+<p class="p1">.sync-pill.saved{background:#F0FDF4;border-color:#86EFAC;color:#166534;}</p>
+<p class="p1">.sync-pill.error{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}</p>
+<p class="p1">.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center;}</p>
+<p class="p1">.btn-ghost{background:white;border:1.5px solid #E2E8F0;border-radius:9px;padding:6px 13px;font-size:12px;color:#475569;font-weight:600;}</p>
+<p class="p1">.btn-ghost:hover{background:#F8FAFC;border-color:#CBD5E1;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── TABS ── */</p>
+<p class="p1">.tab-bar{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;}</p>
+<p class="p1">.tab-bar-in{max-width:1400px;margin:0 auto;display:flex;gap:4px;}</p>
+<p class="p1">.tab-btn{padding:13px 18px;font-size:13px;font-weight:600;color:#94A3B8;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;}</p>
+<p class="p1">.tab-btn.on{color:#6366F1;border-bottom-color:#6366F1;}</p>
+<p class="p1">.tab-btn:hover:not(.on){color:#475569;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── MAIN ── */</p>
+<p class="p1">.main{max-width:1400px;margin:0 auto;padding:22px 24px 60px;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── TODAY ALERT ── */</p>
+<p class="p1">.today-alert{background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1.5px solid #C7D2FE;border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}</p>
+<p class="p1">.ta-title{font-size:13px;font-weight:700;color:#4338CA;margin-bottom:3px;}</p>
+<p class="p1">.ta-body{font-size:12px;color:#4F46E5;line-height:1.7;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── STATS ── */</p>
+<p class="p1">.stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}</p>
+<p class="p1">.stat-box{background:white;border-radius:14px;padding:14px 18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);flex:1;min-width:110px;}</p>
+<p class="p1">.stat-n{font-size:22px;font-weight:800;}</p>
+<p class="p1">.stat-u{font-size:11px;color:#94A3B8;font-weight:600;margin-left:2px;}</p>
+<p class="p1">.stat-l{font-size:10px;color:#94A3B8;margin-top:3px;font-weight:500;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── TOOLBAR ── */</p>
+<p class="p1">.toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap;}</p>
+<p class="p1">.srch{position:relative;flex:1;max-width:260px;}</p>
+<p class="p1">.srch-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8;pointer-events:none;}</p>
+<p class="p1">.srch-input{width:100%;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px 9px 32px;font-size:13px;color:#1A202C;}</p>
+<p class="p1">.btn-add{background:#6366F1;border:none;border-radius:10px;padding:9px 18px;font-size:13px;color:white;font-weight:700;box-shadow:0 4px 12px rgba(99,102,241,.25);}</p>
+<p class="p1">.btn-add:hover{background:#5254D4;transform:translateY(-1px);}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── POST-IT GRID ── */</p>
+<p class="p1">.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── POST-IT CARD ── */</p>
+<p class="p1">.pcard{border-radius:12px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);position:relative;display:flex;flex-direction:column;gap:11px;transition:transform .2s,box-shadow .2s;}</p>
+<p class="p1">.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.05);}</p>
+<p class="p1">.pcard::after{content:'';position:absolute;bottom:0;right:0;width:20px;height:20px;background:linear-gradient(225deg,rgba(0,0,0,.09) 50%,transparent 50%);border-radius:0 0 12px 0;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Card header */</p>
+<p class="p1">.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}</p>
+<p class="p1">.cn{flex:1;min-width:0;}</p>
+<p class="p1">.nkr{font-size:16px;font-weight:800;color:#1A202C;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}</p>
+<p class="p1">.nen{font-size:12px;color:#64748B;font-weight:500;margin-top:2px;}</p>
+<p class="p1">.rbadge{font-size:11px;font-weight:700;color:white;padding:3px 9px;border-radius:20px;flex-shrink:0;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Reminder badge */</p>
+<p class="p1">.rem-badge{font-size:10px;font-weight:700;background:rgba(99,102,241,.12);color:#4F46E5;border-radius:20px;padding:2px 7px;cursor:pointer;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Payment chips */</p>
+<p class="p1">.pay-row{display:flex;gap:6px;flex-wrap:wrap;}</p>
+<p class="p1">.pchip{display:flex;align-items:center;gap:4px;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .18s;user-select:none;flex:1;justify-content:center;}</p>
+<p class="p1">.pchip:hover{filter:brightness(.97);}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Notes area */</p>
+<p class="p1">.notes-area{display:flex;flex-direction:column;gap:6px;min-height:32px;}</p>
+<p class="p1">.ni{border-radius:8px;padding:8px 10px;position:relative;cursor:default;}</p>
+<p class="p1">.ni:hover .nibtn{opacity:1!important;}</p>
+<p class="p1">.ni-text{font-size:12px;color:#1A202C;font-weight:500;line-height:1.5;}</p>
+<p class="p1">.ni-date{font-size:10px;font-weight:600;margin-top:3px;}</p>
+<p class="p1">.nibtn{position:absolute;top:5px;right:6px;display:flex;gap:3px;opacity:0;transition:opacity .15s;}</p>
+<p class="p1">.nibtn button{border:none;border-radius:5px;padding:2px 6px;font-size:10px;}</p>
+<p class="p1">.no-notes{font-size:11px;color:#94A3B8;text-align:center;padding:8px 0;}</p>
+<p class="p1">.btn-addnote{width:100%;background:rgba(0,0,0,.04);border:1.5px dashed rgba(0,0,0,.12);border-radius:8px;padding:7px;font-size:11px;color:#64748B;font-weight:600;transition:all .15s;}</p>
+<p class="p1">.btn-addnote:hover{background:rgba(0,0,0,.07);}</p>
+<p class="p1">.cf{display:flex;justify-content:flex-end;}</p>
+<p class="p1">.btn-del-card{background:none;border:none;font-size:13px;color:#CBD5E1;padding:3px 6px;border-radius:5px;}</p>
+<p class="p1">.btn-del-card:hover{color:#F87171;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Note form */</p>
+<p class="p1">.nform{background:rgba(255,255,255,.85);border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:10px 11px;}</p>
+<p class="p1">.cpills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;}</p>
+<p class="p1">.cpill{border-radius:20px;padding:3px 9px;font-size:10px;font-weight:600;border:1.5px solid;cursor:pointer;transition:all .15s;}</p>
+<p class="p1">.nta{width:100%;background:white;border:1px solid #E2E8F0;border-radius:7px;padding:6px 9px;font-size:12px;resize:vertical;min-height:50px;color:#1A202C;line-height:1.5;}</p>
+<p class="p1">.nfrow{display:flex;gap:6px;align-items:center;margin-top:6px;}</p>
+<p class="p1">.ndi{flex:1;border:1px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:11px;color:#64748B;background:white;}</p>
+<p class="p1">.btn-ns{background:#6366F1;border:none;border-radius:7px;padding:6px 13px;font-size:11px;color:white;font-weight:700;}</p>
+<p class="p1">.btn-nc{background:#F1F5F9;border:none;border-radius:7px;padding:6px 10px;font-size:11px;color:#64748B;font-weight:600;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── CALENDAR TAB ── */</p>
+<p class="p1">.cal-layout{display:grid;grid-template-columns:1fr 310px;gap:18px;}</p>
+<p class="p1">.cal-box{background:white;border-radius:16px;padding:24px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}</p>
+<p class="p1">.cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:18px;}</p>
+<p class="p1">.cal-title{font-size:18px;font-weight:800;color:#1A202C;flex:1;}</p>
+<p class="p1">.cal-nbtn{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:6px 13px;font-size:14px;color:#475569;font-weight:700;}</p>
+<p class="p1">.cal-nbtn:hover{background:#F1F5F9;}</p>
+<p class="p1">.cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}</p>
+<p class="p1">.cal-hd{text-align:center;font-size:11px;font-weight:700;color:#94A3B8;padding:4px 0;}</p>
+<p class="p1">.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}</p>
+<p class="p1">.cday{min-height:76px;background:#FAFAFA;border-radius:10px;padding:7px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;position:relative;}</p>
+<p class="p1">.cday:hover{background:#F1F5F9;border-color:#E2E8F0;}</p>
+<p class="p1">.cday.today{background:#EEF2FF;border-color:#A5B4FC;}</p>
+<p class="p1">.cday.other{opacity:.32;}</p>
+<p class="p1">.cday.hase{border-color:#C7D2FE;}</p>
+<p class="p1">.cdnum{font-size:12px;font-weight:600;color:#475569;margin-bottom:3px;}</p>
+<p class="p1">.cday.today .cdnum{background:#6366F1;color:white;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}</p>
+<p class="p1">.cevents{display:flex;flex-direction:column;gap:2px;}</p>
+<p class="p1">.cetag{font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;}</p>
+<p class="p1">.cmore{font-size:9px;color:#94A3B8;font-weight:600;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Sidebar */</p>
+<p class="p1">.sb{background:white;border-radius:16px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow-y:auto;max-height:620px;}</p>
+<p class="p1">.sb-title{font-size:13px;font-weight:700;color:#1A202C;margin-bottom:14px;display:flex;align-items:center;gap:6px;}</p>
+<p class="p1">.ritem{background:#F8FAFC;border-radius:9px;padding:9px 11px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start;border:1px solid #F1F5F9;border-left:3px solid;}</p>
+<p class="p1">.ri-text{font-size:12px;color:#334155;font-weight:500;line-height:1.4;}</p>
+<p class="p1">.ri-stu{font-size:10px;color:#6366F1;font-weight:600;margin-top:2px;}</p>
+<p class="p1">.ri-date{font-size:10px;color:#94A3B8;font-weight:600;margin-top:1px;}</p>
+<p class="p1">.sb-empty{font-size:12px;color:#94A3B8;text-align:center;padding:24px 0;line-height:1.8;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── REMINDERS TAB ── */</p>
+<p class="p1">.rtab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}</p>
+<p class="p1">.rmc{background:white;border-radius:14px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}</p>
+<p class="p1">.rmc-hdr{font-size:13px;font-weight:800;color:#1A202C;margin-bottom:12px;display:flex;align-items:center;gap:8px;}</p>
+<p class="p1">.rmc-now{background:#EEF2FF;color:#6366F1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}</p>
+<p class="p1">.rmc-past{font-size:10px;color:#94A3B8;}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── MODALS ── */</p>
+<p class="p1">.mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;backdrop-filter:blur(3px);}</p>
+<p class="p1">.mbox{background:white;border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.15);width:100%;}</p>
+<p class="p1">.mtitle{font-size:16px;font-weight:800;color:#1A202C;margin-bottom:3px;}</p>
+<p class="p1">.msub{font-size:12px;color:#94A3B8;margin-bottom:20px;}</p>
+<p class="p1">.fg{margin-bottom:13px;}</p>
+<p class="p1">.fl{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}</p>
+<p class="p1">.fi{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 13px;font-size:13px;color:#1A202C;}</p>
+<p class="p1">.fi:focus{background:white;}</p>
+<p class="p1">.ma{display:flex;gap:8px;margin-top:6px;}</p>
+<p class="p1">.btn-mp{flex:1;background:#6366F1;border:none;border-radius:11px;padding:11px 0;color:white;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(99,102,241,.25);}</p>
+<p class="p1">.btn-mp:hover{background:#5254D4;}</p>
+<p class="p1">.btn-ms{background:#F1F5F9;border:none;border-radius:11px;padding:11px 18px;color:#64748B;font-weight:600;font-size:13px;}</p>
+<p class="p1">.btn-ms:hover{background:#E2E8F0;}</p>
+<p class="p2"><br></p>
+<p class="p1">.fb-note{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:11px 14px;font-size:12px;color:#166534;margin-bottom:14px;line-height:1.7;}</p>
+<p class="p1">.fb-steps{font-size:12px;color:#475569;line-height:1.9;margin-bottom:14px;}</p>
+<p class="p1">code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px;}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- HEADER --&gt;</p>
+<p class="p1">&lt;div class="hdr"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="hdr-in"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="logo-icon"&gt;📚&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="logo-title"&gt;Sehee Tutor&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="logo-sub"&gt;Student Dashboard&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="sync-pill" class="sync-pill local"&gt;💾 로컬 저장&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hdr-right"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ghost" onclick="openM('mfb')"&gt;☁️ Firebase&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- TABS --&gt;</p>
+<p class="p1">&lt;div class="tab-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="tab-bar-in"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="tab-btn on" onclick="tab('students',this)"&gt;📋 학생 관리&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="tab-btn"<span class="Apple-converted-space">    </span>onclick="tab('calendar',this)"&gt;📅 캘린더&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="tab-btn"<span class="Apple-converted-space">    </span>onclick="tab('reminders',this)"&gt;📌 리마인더&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MAIN --&gt;</p>
+<p class="p1">&lt;div class="main"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="today-alert" style="display:none"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- TAB: STUDENTS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="t-students"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stats-row" id="stats-row"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="toolbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="srch"&gt;&lt;span class="srch-icon"&gt;🔍&lt;/span&gt;&lt;input class="srch-input" id="srch" placeholder="학생 검색…" oninput="onSearch(this.value)"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-add" onclick="openM('mstu')"&gt;+ 학생 추가&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="pgrid" class="pgrid"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- TAB: CALENDAR --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="t-calendar" style="display:none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cal-layout"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="cal-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cal-nav"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="cal-nbtn" onclick="calGo(-1)"&gt;‹&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="cal-title" id="cal-title"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="cal-nbtn" onclick="calGo(1)"&gt;›&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="cal-nbtn" style="font-size:11px" onclick="calNow()"&gt;오늘&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cal-hdr"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="cal-hd" style="color:#EF4444"&gt;일&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="cal-hd"&gt;월&lt;/div&gt;&lt;div class="cal-hd"&gt;화&lt;/div&gt;&lt;div class="cal-hd"&gt;수&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="cal-hd"&gt;목&lt;/div&gt;&lt;div class="cal-hd"&gt;금&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="cal-hd" style="color:#3B82F6"&gt;토&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="cal-grid" class="cal-grid"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="sb"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sb-title"&gt;📌 &lt;span id="sb-month"&gt;&lt;/span&gt; 일정&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="sb-events"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- TAB: REMINDERS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="t-reminders" style="display:none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="rtab"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MODAL: ADD STUDENT --&gt;</p>
+<p class="p1">&lt;div id="mstu" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mstu')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="mbox" style="max-width:370px" onclick="event.stopPropagation()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mtitle"&gt;+ 새 학생 추가&lt;/div&gt;&lt;div class="msub"&gt;학생 정보를 입력해 주세요&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;한국 이름&lt;/div&gt;&lt;input class="fi" id="skr" placeholder="예: 홍길동" onkeydown="if(event.key==='Enter')doAddStu()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;영어 이름&lt;/div&gt;&lt;input class="fi" id="sen" placeholder="예: Gildong" onkeydown="if(event.key==='Enter')doAddStu()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;시급 (만원)&lt;/div&gt;&lt;input class="fi" id="srate" type="number" min="1" placeholder="예: 9" onkeydown="if(event.key==='Enter')doAddStu()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ma"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-mp" onclick="doAddStu()"&gt;추가&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ms" onclick="closeM('mstu')"&gt;취소&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MODAL: ADD EVENT --&gt;</p>
+<p class="p1">&lt;div id="mev" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mev')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="mbox" style="max-width:380px" onclick="event.stopPropagation()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mtitle" id="ev-title"&gt;📅 일정 추가&lt;/div&gt;&lt;div class="msub" id="ev-sub"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;날짜&lt;/div&gt;&lt;input class="fi" id="ev-date" type="date"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;내용&lt;/div&gt;&lt;input class="fi" id="ev-text" placeholder="예: KIS 판교 입학 면접" onkeydown="if(event.key==='Enter')doAddEvent()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;학생 (선택)&lt;/div&gt;&lt;select class="fi" id="ev-stu"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;카테고리&lt;/div&gt;&lt;div id="ev-cats" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px"&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ma"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-mp" onclick="doAddEvent()"&gt;저장&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ms" onclick="closeM('mev')"&gt;취소&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MODAL: FIREBASE --&gt;</p>
+<p class="p1">&lt;div id="mfb" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mfb')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="mbox" style="max-width:500px;max-height:88vh;overflow-y:auto" onclick="event.stopPropagation()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mtitle"&gt;☁️ Firebase 자동저장 설정&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="msub"&gt;구글 독스처럼 실시간 자동 저장 + 멀티 기기 동기화&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fb-note"&gt;✅ Firebase 없이도 로컬 저장으로 정상 작동합니다. Firebase는 여러 기기(PC + 폰)에서 동기화할 때 유용해요.&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fb-steps"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>1. &lt;a href="https://console.firebase.google.com" target="_blank"&gt;console.firebase.google.com&lt;/a&gt; 접속&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>2. 새 프로젝트 생성 → Firestore Database 활성화&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>3. 프로젝트 설정 → 웹 앱 추가 → config 복사&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>4. Firestore 규칙: &lt;code&gt;allow read, write: if true;&lt;/code&gt; 설정</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;div class="fl"&gt;Firebase Config (JSON 형식)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;textarea class="fi" id="fb-cfg" rows="7" style="font-size:11px;font-family:monospace;resize:vertical" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ma"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-mp" onclick="doFbSave()"&gt;연결하기&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ms" onclick="doFbDisconnect()"&gt;연결 해제&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ms" onclick="closeM('mfb')"&gt;닫기&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">/* ═══ CONSTANTS ═══ */</p>
+<p class="p1">const PC = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#FFDDE8',bd:'#FFC2D4',acc:'#C2185B'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#BFE3FF',bd:'#93CAFF',acc:'#1565C0'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#FFF9C4',bd:'#FFF176',acc:'#827717'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#E8D5F5',bd:'#CEB4E8',acc:'#6A1B9A'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#C8F5D5',bd:'#9FE8B7',acc:'#2E7D32'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#FFE4B5',bd:'#FFCC80',acc:'#BF360C'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{bg:'#B8F0E8',bd:'#7FE0D0',acc:'#00695C'},</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const CATS = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>exam:<span class="Apple-converted-space">    </span>{i:'📝',l:'시험·테스트',bg:'#FFECEC',bd:'#FFCDD2',c:'#C62828'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>class: <span class="Apple-converted-space">  </span>{i:'📚',l:'수업내용', <span class="Apple-converted-space">  </span>bg:'#E3F2FD',bd:'#BBDEFB',c:'#1565C0'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>goal:<span class="Apple-converted-space">    </span>{i:'🎯',l:'목표·준비',<span class="Apple-converted-space">  </span>bg:'#F3E5F5',bd:'#E1BEE7',c:'#6A1B9A'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>general: {i:'📌',l:'일반메모', <span class="Apple-converted-space">  </span>bg:'#FFFDE7',bd:'#FFF9C4',c:'#F57F17'},</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const CHIP_C={13:'#7C3AED',10:'#0284C7',9:'#0891B2',8:'#059669',7:'#D97706',6:'#EA580C',5:'#64748B'};</p>
+<p class="p1">const rC=r=&gt;CHIP_C[r]||CHIP_C[5];</p>
+<p class="p1">const MO=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];</p>
+<p class="p1">const INIT=[</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'1',kr:'추헨리 &amp; 추엘리',en:'Henry &amp; Ellie',rate:13,ci:0},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'2',kr:'최용준',en:'Jun',rate:10,ci:1},{id:'3',kr:'정예교 &amp; 정인교',en:'Eli &amp; Eddy',rate:10,ci:2},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'4',kr:'최호재',en:'Hojae',rate:10,ci:3},{id:'5',kr:'이안',en:'Ian',rate:9,ci:4},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'6',kr:'신소희',en:'Sohee',rate:9,ci:5},{id:'7',kr:'이윤진',en:'Yoonjin',rate:9,ci:6},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'8',kr:'이시안',en:'Cian',rate:9,ci:0},{id:'9',kr:'김무이',en:'Mui',rate:8,ci:1},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'10',kr:'김준상',en:'William',rate:8,ci:2},{id:'11',kr:'최은빈',en:'Eunbin',rate:8,ci:3},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'12',kr:'신서희',en:'Riley',rate:8,ci:4},{id:'13',kr:'이승원',en:'David',rate:8,ci:5},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'14',kr:'박민',en:'Min',rate:8,ci:6},{id:'15',kr:'도온',en:'On',rate:8,ci:0},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'16',kr:'도윤',en:'Yoon',rate:8,ci:1},{id:'17',kr:'권서하',en:'Seoha',rate:8,ci:2},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'18',kr:'전시우',en:'Daniel',rate:7,ci:3},{id:'19',kr:'박재민',en:'Terence',rate:7,ci:4},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'20',kr:'박지아',en:'Jia',rate:7,ci:5},{id:'21',kr:'이윤성',en:'Yoonsung',rate:7,ci:6},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'22',kr:'박유민',en:'Yoomin',rate:7,ci:0},{id:'23',kr:'김루카스지원',en:'Lucas',rate:7,ci:1},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'24',kr:'임라희',en:'Rahee',rate:7,ci:2},{id:'25',kr:'양승원',en:'Sally',rate:7,ci:3},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'26',kr:'우세연',en:'Elena',rate:7,ci:4},{id:'27',kr:'서지우',en:'Jiwoo',rate:7,ci:5},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'28',kr:'이제인',en:'Jane',rate:7,ci:6},{id:'29',kr:'서병우',en:'Byeongwoo',rate:7,ci:0},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'30',kr:'김태연',en:'Ashley',rate:6,ci:1},{id:'31',kr:'이토니',en:'Tony',rate:6,ci:2},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'32',kr:'김지윤',en:'Joann',rate:6,ci:3},{id:'33',kr:'김은재',en:'Edward',rate:6,ci:4},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{id:'34',kr:'안세연',en:'Ceyon',rate:6,ci:5},{id:'35',kr:'김태균',en:'Ethan',rate:5,ci:6},</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">const uid=()=&gt;`${Date.now()}${Math.random().toString(36).slice(2,5)}`;</p>
+<p class="p1">const esc=s=&gt;String(s||'').replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/&gt;/g,'&amp;gt;').replace(/"/g,'&amp;quot;');</p>
+<p class="p1">const nd=new Date();</p>
+<p class="p1">const MK=`${nd.getFullYear()}_${String(nd.getMonth()+1).padStart(2,'0')}`;</p>
+<p class="p1">const todayStr=`${nd.getFullYear()}-${String(nd.getMonth()+1).padStart(2,'0')}-${String(nd.getDate()).padStart(2,'0')}`;</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ STATE ═══ */</p>
+<p class="p1">let S=JSON.parse(localStorage.getItem('v2_s')||'null')||INIT;</p>
+<p class="p1">let N=JSON.parse(localStorage.getItem('v2_n')||'{}');</p>
+<p class="p1">let P=JSON.parse(localStorage.getItem('v2_p_'+MK)||'{}');</p>
+<p class="p1">let CAL=JSON.parse(localStorage.getItem('v2_c')||'{}');</p>
+<p class="p2"><br></p>
+<p class="p1">let addNF=null,editNR=null,selCat={},activeTab='students',srch='';</p>
+<p class="p1">let calM=new Date(nd.getFullYear(),nd.getMonth(),1);</p>
+<p class="p1">let evCat='general',db=null,saveT=null;</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ FIREBASE ═══ */</p>
+<p class="p1">const FIREBASE_CONFIG = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>apiKey: "AIzaSyB9dRh77_GKbTVQkSEeuzIUaLyOzlg5NOo",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>authDomain: "student-management-abe1e.firebaseapp.com",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>projectId: "student-management-abe1e",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>storageBucket: "student-management-abe1e.firebasestorage.app",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>messagingSenderId: "243422354779",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>appId: "1:243422354779:web:9b42c57dec2c9644058e7e",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>measurementId: "G-QFNE85QQEZ"</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">function initFB(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(typeof firebase==='undefined') return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>db=firebase.firestore();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>loadFB();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSP('saved','☁️ Firebase 연결됨');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){setSP('error','Firebase 오류');console.error(e);}</p>
+<p class="p1">}</p>
+<p class="p1">async function loadFB(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!db) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const col=db.collection('sehee');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const snap=await col.doc('main').get().catch(()=&gt;null);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(snap&amp;&amp;snap.exists){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const d=snap.data();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d.s) S=d.s;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d.n) N=d.n;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d.c) CAL=d.c;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d['p_'+MK]) P=d['p_'+MK];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>saveLocal(); render(); renderCal(); renderRTab();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">async function fbSave(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>saveLocal();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!db){setSP('local','💾 저장됨');return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSP('saving','✏️ 저장 중…');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await db.collection('sehee').doc('main').set({s:S,n:N,c:CAL,['p_'+MK]:P},{merge:true});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSP('saved','☁️ 저장됨');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){setSP('error','저장 오류');}</p>
+<p class="p1">}</p>
+<p class="p1">function sched(){clearTimeout(saveT);setSP('saving','✏️ 저장 중…');saveT=setTimeout(fbSave,900);}</p>
+<p class="p1">function saveLocal(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('v2_s',JSON.stringify(S));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('v2_n',JSON.stringify(N));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('v2_p_'+MK,JSON.stringify(P));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('v2_c',JSON.stringify(CAL));</p>
+<p class="p1">}</p>
+<p class="p1">function setSP(t,txt){const e=document.getElementById('sync-pill');if(e){e.className='sync-pill '+t;e.textContent=txt;}}</p>
+<p class="p1">function doFbSave(){ closeM('mfb'); }</p>
+<p class="p1">function doFbDisconnect(){ closeM('mfb'); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ STUDENT OPS ═══ */</p>
+<p class="p1">function doAddStu(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const kr=document.getElementById('skr').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const en=document.getElementById('sen').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const rate=+document.getElementById('srate').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!kr||!en||!rate) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>S.push({id:uid(),kr,en,rate,ci:S.length%PC.length});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['skr','sen','srate'].forEach(id=&gt;document.getElementById(id).value='');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>closeM('mstu'); sched(); render();</p>
+<p class="p1">}</p>
+<p class="p1">function delStu(id){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!confirm('이 학생을 삭제할까요?')) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>S=S.filter(s=&gt;s.id!==id); delete N[id]; delete P[id];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sched(); render();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ NOTE OPS ═══ */</p>
+<p class="p1">function openNF(sid){addNF=sid;editNR=null;selCat[sid]='general';render();}</p>
+<p class="p1">function openEN(sid,nid){editNR={sid,nid};addNF=null;const n=(N[sid]||[]).find(x=&gt;x.id===nid);if(n)selCat[sid]=n.category||'general';render();}</p>
+<p class="p1">function cancelNF(){addNF=null;editNR=null;render();}</p>
+<p class="p1">function doAN(sid){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t=(document.getElementById('nt-'+sid)||{}).value?.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const d=(document.getElementById('nd-'+sid)||{}).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=selCat[sid]||'general';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!t) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!N[sid])N[sid]=[];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>N[sid].push({id:uid(),text:t,date:d||null,category:c,ts:Date.now()});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>addNF=null; sched(); render();</p>
+<p class="p1">}</p>
+<p class="p1">function doUN(sid,nid){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t=(document.getElementById('nt-'+sid)||{}).value?.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const d=(document.getElementById('nd-'+sid)||{}).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=selCat[sid]||'general';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!t) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(N[sid]) N[sid]=N[sid].map(n=&gt;n.id===nid?{...n,text:t,date:d||null,category:c}:n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editNR=null; sched(); render();</p>
+<p class="p1">}</p>
+<p class="p1">function delN(sid,nid){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(N[sid]) N[sid]=N[sid].filter(n=&gt;n.id!==nid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sched(); render();</p>
+<p class="p1">}</p>
+<p class="p1">function setCat(sid,cat){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>selCat[sid]=cat;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const row=document.getElementById('cr-'+sid); if(!row) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>row.dataset.sel=cat;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>row.querySelectorAll('.cpill').forEach(b=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const k=b.dataset.cat,v=CATS[k],on=k===cat;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ PAYMENT OPS ═══ */</p>
+<p class="p1">function togP(sid,type){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!P[sid])P[sid]={paid:false,msgSent:false};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>P[sid][type]=!P[sid][type]; sched();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const paid=P[sid].paid,msg=P[sid].msgSent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['pay','msg'].forEach(t=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const e=document.getElementById('pc-'+t+'-'+sid); if(e) e.outerHTML=buildPC(sid,t);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>updateStats();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ CALENDAR OPS ═══ */</p>
+<p class="p1">function openEv(ds){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>evCat='general';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('ev-date').value=ds||'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('ev-text').value='';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('ev-sub').textContent=ds?`날짜: ${ds}`:'날짜를 입력해 주세요';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sel=document.getElementById('ev-stu');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sel.innerHTML='&lt;option value=""&gt;-- 일반 일정 --&lt;/option&gt;'+S.map(s=&gt;`&lt;option value="${s.id}"&gt;${esc(s.kr)} (${esc(s.en)})&lt;/option&gt;`).join('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('ev-cats').innerHTML=Object.entries(CATS).map(([k,v])=&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="cpill" data-cat="${k}" onclick="evCat='${k}';updEvCats()"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>style="background:${k==='general'?v.bg:'white'};border-color:${k==='general'?v.bd:'#E2E8F0'};color:${k==='general'?v.c:'#94A3B8'}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${v.i} ${v.l}&lt;/button&gt;`).join('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>openM('mev'); setTimeout(()=&gt;document.getElementById('ev-text').focus(),60);</p>
+<p class="p1">}</p>
+<p class="p1">function updEvCats(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('ev-cats').querySelectorAll('.cpill').forEach(b=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const k=b.dataset.cat,v=CATS[k],on=k===evCat;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function doAddEvent(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const dt=document.getElementById('ev-date').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tx=document.getElementById('ev-text').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const si=document.getElementById('ev-stu').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!dt||!tx) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!CAL[dt]) CAL[dt]=[];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CAL[dt].push({id:uid(),text:tx,studentId:si||null,category:evCat||'general',ts:Date.now()});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>closeM('mev'); sched(); renderCal(); renderRTab();</p>
+<p class="p1">}</p>
+<p class="p1">function delEv(ds,eid){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(CAL[ds]) CAL[ds]=CAL[ds].filter(e=&gt;e.id!==eid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sched(); renderCal(); renderRTab();</p>
+<p class="p1">}</p>
+<p class="p1">function calGo(d){calM=new Date(calM.getFullYear(),calM.getMonth()+d,1);renderCal();}</p>
+<p class="p1">function calNow(){calM=new Date(nd.getFullYear(),nd.getMonth(),1);renderCal();}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ MODAL ═══ */</p>
+<p class="p1">function openM(id){const e=document.getElementById(id);if(e)e.style.display='flex';}</p>
+<p class="p1">function closeM(id){const e=document.getElementById(id);if(e)e.style.display='none';}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ TABS ═══ */</p>
+<p class="p1">function tab(t,btn){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>activeTab=t;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.tab-btn').forEach(b=&gt;b.classList.remove('on'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>btn.classList.add('on');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['students','calendar','reminders'].forEach(x=&gt;document.getElementById('t-'+x).style.display=x===t?'block':'none');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(t==='calendar') renderCal();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(t==='reminders') renderRTab();</p>
+<p class="p1">}</p>
+<p class="p1">function onSearch(v){srch=v;render();}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ BUILDERS ═══ */</p>
+<p class="p1">function buildPC(sid,type){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const py=P[sid]||{paid:false,msgSent:false};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const on=type==='pay'?py.paid:py.msgSent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [yl,nl,field]=type==='pay'?['✓ 입금','미입금','paid']:['✉️ 전송','미전송','msgSent'];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [ys,ns]=type==='pay'</p>
+<p class="p1"><span class="Apple-converted-space">    </span>?['background:#D1FAE5;border-color:#6EE7B7;color:#065F46','background:#FFFBEB;border-color:#FCD34D;color:#92400E']</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:['background:#DBEAFE;border-color:#93C5FD;color:#1E40AF','background:#F1F5F9;border-color:#CBD5E1;color:#64748B'];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div id="pc-${type}-${sid}" class="pchip" onclick="togP('${sid}','${field}')" style="${on?ys:ns}"&gt;${on?yl:nl}&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function buildCR(sid,sel){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s=sel||'general';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div class="cpills" id="cr-${sid}" data-sel="${s}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${Object.entries(CATS).map(([k,v])=&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="cpill" data-cat="${k}" onclick="setCat('${sid}','${k}')"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>style="background:${k===s?v.bg:'white'};border-color:${k===s?v.bd:'#E2E8F0'};color:${k===s?v.c:'#94A3B8'}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${v.i} ${v.l}&lt;/button&gt;`).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function buildNF(sid,init){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const act=init?`doUN('${sid}','${init.id}')`:`doAN('${sid}')`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div class="nform"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${buildCR(sid,init?.category)}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;textarea class="nta" id="nt-${sid}" placeholder="메모 내용 입력…"&gt;${esc(init?.text||'')}&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="nfrow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="date" class="ndi" id="nd-${sid}" value="${init?.date||''}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-ns" onclick="${act}"&gt;저장&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-nc" onclick="cancelNF()"&gt;<span class="s1">✕</span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function buildNC(sid,n){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isE=editNR?.sid===sid&amp;&amp;editNR?.nid===n.id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(isE) return buildNF(sid,n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=CATS[n.category]||CATS.general;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div class="ni" style="background:${c.bg};border:1px solid ${c.bd}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ni-text"&gt;${c.i} ${esc(n.text)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${n.date?`&lt;div class="ni-date" style="color:${c.c}"&gt;📅 ${n.date}&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="nibtn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button onclick="openEN('${sid}','${n.id}')" style="background:rgba(0,0,0,.06);color:#475569"&gt;✏️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button onclick="delN('${sid}','${n.id}')" style="background:rgba(220,38,38,.08);color:#DC2626"&gt;<span class="s1">✕</span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function buildCard(s,idx){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=PC[s.ci!==undefined?s.ci:idx%PC.length];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sN=N[s.id]||[];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isA=addNF===s.id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Upcoming reminders count</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const remCnt=[...sN.filter(n=&gt;n.date&amp;&amp;n.date&gt;=todayStr),...Object.entries(CAL).flatMap(([d,ev])=&gt;ev.filter(e=&gt;e.studentId===s.id&amp;&amp;d&gt;=todayStr))].length;</p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div class="pcard" style="background:${c.bg};border:1.5px solid ${c.bd}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ch"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="cn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="nkr"&gt;${esc(s.kr)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="nen"&gt;${esc(s.en)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="rbadge" style="background:${c.bg};color:${c.acc};border:1.5px solid ${c.bd}"&gt;${s.rate}만원&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${remCnt&gt;0?`&lt;span class="rem-badge" onclick="tab('reminders',document.querySelectorAll('.tab-btn')[2])"&gt;📅 ${remCnt}&lt;/span&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="pay-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${buildPC(s.id,'msg')}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${buildPC(s.id,'pay')}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="notes-area"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${isA?buildNF(s.id,null):''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${sN.length===0&amp;&amp;!isA?'&lt;div class="no-notes"&gt;메모 없음&lt;/div&gt;':''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${sN.map(n=&gt;buildNC(s.id,n)).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${!isA?`&lt;button class="btn-addnote" onclick="openNF('${s.id}')"&gt;+ 메모 추가&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cf"&gt;&lt;button class="btn-del-card" onclick="delStu('${s.id}')" title="학생 삭제"&gt;🗑&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ STATS ═══ */</p>
+<p class="p1">function updateStats(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tot=S.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const avg=tot?(S.reduce((a,s)=&gt;a+s.rate,0)/tot).toFixed(1):0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const maxR=tot?Math.max(...S.map(s=&gt;s.rate)):0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const paidN=Object.values(P).filter(p=&gt;p.paid).length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const msgN =Object.values(P).filter(p=&gt;p.msgSent).length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stats-row').innerHTML=[</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{v:tot,u:'명',l:'총 학생',col:'#6366F1'},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{v:avg,u:'만원',l:'평균 시급',col:'#059669'},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{v:maxR,u:'만원',l:'최고 시급',col:'#7C3AED'},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{v:paidN+'/'+tot,u:'',l:'💰 입금 완료',col:paidN===tot&amp;&amp;tot&gt;0?'#059669':'#D97706'},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{v:msgN+'/'+tot,u:'',l:'✉️ 정산문자 전송',col:msgN===tot&amp;&amp;tot&gt;0?'#0891B2':'#94A3B8'},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>].map(x=&gt;`&lt;div class="stat-box"&gt;&lt;div&gt;&lt;span class="stat-n" style="color:${x.col}"&gt;${x.v}&lt;/span&gt;&lt;span class="stat-u"&gt;${x.u}&lt;/span&gt;&lt;/div&gt;&lt;div class="stat-l"&gt;${x.l}&lt;/div&gt;&lt;/div&gt;`).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ TODAY ALERT ═══ */</p>
+<p class="p1">function renderAlert(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ev=CAL[todayStr]||[];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const el=document.getElementById('today-alert');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!ev.length){el.style.display='none';return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.style.display='flex';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.innerHTML=`&lt;div style="font-size:20px"&gt;🔔&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="ta-title"&gt;오늘의 일정 (${ev.length}개)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="ta-body"&gt;${ev.map(e=&gt;{const st=e.studentId?S.find(s=&gt;s.id===e.studentId):null;return(st?`[${esc(st.en)}] `:'')+esc(e.text);}).join('&lt;br&gt;')}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ RENDER STUDENTS ═══ */</p>
+<p class="p1">function render(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const q=srch.toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const f=S.filter(s=&gt;!q||s.kr.includes(q)||s.en.toLowerCase().includes(q)).sort((a,b)=&gt;b.rate-a.rate);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('pgrid').innerHTML=f.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>?f.map((s,i)=&gt;buildCard(s,i)).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:`&lt;div style="grid-column:1/-1;text-align:center;padding:48px;background:white;border-radius:16px;color:#94A3B8;font-size:13px"&gt;검색 결과가 없습니다&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>updateStats(); renderAlert();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ RENDER CALENDAR ═══ */</p>
+<p class="p1">function renderCal(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const y=calM.getFullYear(),m=calM.getMonth();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('cal-title').textContent=`${y}년 ${MO[m]}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('sb-month').textContent=MO[m];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const first=new Date(y,m,1).getDay();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const dim=new Date(y,m+1,0).getDate();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const total=Math.ceil((first+dim)/7)*7;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let html='';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;total;i++){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let dn,ds,om=false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const col=i%7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(i&lt;first){dn=new Date(y,m,0).getDate()-first+i+1;const pm=m===0?12:m,py=m===0?y-1:y;ds=`${py}-${String(pm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else if(i&lt;first+dim){dn=i-first+1;ds=`${y}-${String(m+1).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else{dn=i-first-dim+1;const nm=m===11?1:m+2,ny=m===11?y+1:y;ds=`${ny}-${String(nm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const isT=!om&amp;&amp;ds===todayStr;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Events for this day (cal + notes with date)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const cev=CAL[ds]||[];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nev=S.flatMap(s=&gt;(N[s.id]||[]).filter(n=&gt;n.date===ds).map(n=&gt;({...n,_student:s,fromNote:true})));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const allEv=[...cev,...nev];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const hasE=allEv.length&gt;0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html+=`&lt;div class="cday${isT?' today':''}${om?' other':''}${hasE?' hase':''}" onclick="openEv('${ds}')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="cdnum" style="${!isT&amp;&amp;col===0?'color:#EF4444':!isT&amp;&amp;col===6?'color:#3B82F6':''}"&gt;${dn}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="cevents"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${allEv.slice(0,2).map(e=&gt;{const c=CATS[e.category]||CATS.general;return`&lt;div class="cetag" style="background:${c.bg};color:${c.c};border:1px solid ${c.bd}"&gt;${c.i} ${esc((e.text||'').slice(0,9))}${(e.text||'').length&gt;9?'…':''}&lt;/div&gt;`;}).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${allEv.length&gt;2?`&lt;div class="cmore"&gt;+${allEv.length-2}개&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('cal-grid').innerHTML=html;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderSB();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderSB(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const y=calM.getFullYear(),m=calM.getMonth();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const evs=[];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(const [ds,arr] of Object.entries(CAL)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const d=new Date(ds+'T00:00:00');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d.getFullYear()===y&amp;&amp;d.getMonth()===m) arr.forEach(e=&gt;evs.push({...e,date:ds,d}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>S.forEach(s=&gt;(N[s.id]||[]).forEach(n=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(n.date){const d=new Date(n.date+'T00:00:00');if(d.getFullYear()===y&amp;&amp;d.getMonth()===m)evs.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>evs.sort((a,b)=&gt;a.d-b.d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!evs.length){document.getElementById('sb-events').innerHTML=`&lt;div class="sb-empty"&gt;이 달에 일정이 없습니다&lt;br&gt;&lt;small&gt;날짜를 클릭하면 추가할 수 있어요&lt;/small&gt;&lt;/div&gt;`;return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('sb-events').innerHTML=evs.map(e=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const c=CATS[e.category]||CATS.general;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const st=e.studentId?S.find(s=&gt;s.id===e.studentId):null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="ritem" style="border-left-color:${c.c}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span style="font-size:14px;flex-shrink:0"&gt;${c.i}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="flex:1;min-width:0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ri-text"&gt;${esc(e.text)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${st?`&lt;div class="ri-stu"&gt;${esc(st.kr)} · ${esc(st.en)}&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ri-date"&gt;📅 ${e.date}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${!e.fromNote?`&lt;button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0"&gt;<span class="s1">✕</span>&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ REMINDERS TAB ═══ */</p>
+<p class="p1">function renderRTab(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tm=nd.getMonth()+1,ty=nd.getFullYear();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const map={};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Calendar events</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(const [ds,arr] of Object.entries(CAL)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const d=new Date(ds+'T00:00:00');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const k=`${d.getFullYear()}_${d.getMonth()+1}`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>arr.forEach(e=&gt;map[k].items.push({...e,date:ds,d}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Notes with dates</p>
+<p class="p1"><span class="Apple-converted-space">  </span>S.forEach(s=&gt;(N[s.id]||[]).forEach(n=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(n.date){const d=new Date(n.date+'T00:00:00');const k=`${d.getFullYear()}_${d.getMonth()+1}`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>map[k].items.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const keys=Object.keys(map).sort();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!keys.length){document.getElementById('rtab').innerHTML='&lt;div style="text-align:center;padding:60px;color:#94A3B8;font-size:13px"&gt;📅 아직 일정이 없습니다&lt;br&gt;&lt;small style="display:block;margin-top:6px;font-size:11px"&gt;캘린더 탭에서 날짜를 클릭해 추가하거나,&lt;br&gt;학생 카드 메모에 날짜를 입력해 보세요!&lt;/small&gt;&lt;/div&gt;';return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('rtab').innerHTML=`&lt;div class="rtab-grid"&gt;${keys.map(k=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const g=map[k];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const isNow=g.y===ty&amp;&amp;g.m===tm;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const isPast=new Date(g.y,g.m-1)&lt;new Date(ty,tm-1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>g.items.sort((a,b)=&gt;a.d-b.d);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="rmc" style="${isNow?'border:2px solid #A5B4FC':''}${isPast?'opacity:.55':''}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="rmc-hdr"&gt;${g.y}년 ${MO[g.m-1]} ${isNow?'&lt;span class="rmc-now"&gt;이번 달 ★&lt;/span&gt;':''} ${isPast?'&lt;span class="rmc-past"&gt;(지난 달)&lt;/span&gt;':''}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${g.items.map(e=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const c=CATS[e.category]||CATS.general;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const st=e.studentId?S.find(s=&gt;s.id===e.studentId):null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return`&lt;div class="ritem" style="border-left-color:${c.c}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span style="font-size:13px;flex-shrink:0"&gt;${c.i}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div style="flex:1;min-width:0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ri-text"&gt;${esc(e.text)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>${st?`&lt;div class="ri-stu"&gt;${esc(st.kr)} · ${esc(st.en)}&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ri-date"&gt;📅 ${e.date}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>${!e.fromNote?`&lt;button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0"&gt;<span class="s1">✕</span>&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('')}&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══ INIT ═══ */</p>
+<p class="p1">initFB();</p>
+<p class="p1">render();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
