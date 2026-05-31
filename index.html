@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>📚 Sehee Tutor Dashboard</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -13,82 +12,66 @@ body{background:#F4F5F7;font-family:'Inter','Noto Sans KR',sans-serif;color:#1A2
 ::placeholder{color:#C4CCDA;}
 input,textarea,button,select{font-family:inherit;}
 input:focus,textarea:focus,select:focus{outline:none;border-color:#6366F1!important;box-shadow:0 0 0 3px rgba(99,102,241,.1)!important;}
-button{cursor:pointer;transition:all .15s;}
-button:active{transform:scale(.97);}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}
-a{color:#6366F1;}
-input[type=date]{color-scheme:light;}
+button{cursor:pointer;transition:all .15s;}button:active{transform:scale(.97);}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}
+a{color:#6366F1;}input[type=date]{color-scheme:light;}
 
-/* ── HEADER ── */
-.hdr{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;position:sticky;top:0;z-index:200;box-shadow:0 1px 6px rgba(0,0,0,.05);}
-.hdr-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:14px;height:62px;}
+/* HEADER */
+.hdr{background:#fff;border-bottom:1.5px solid #EAECF0;padding:0 24px;position:sticky;top:0;z-index:200;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.hdr-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:12px;height:62px;}
 .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
 .logo-title{font-size:18px;font-weight:800;color:#1A202C;letter-spacing:-.3px;}
 .logo-sub{font-size:11px;color:#94A3B8;font-weight:500;}
-.sync-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid;}
-.sync-pill.local{background:#F8FAFC;border-color:#E2E8F0;color:#64748B;}
-.sync-pill.saving{background:#FFFBEB;border-color:#FCD34D;color:#92400E;}
-.sync-pill.saved{background:#F0FDF4;border-color:#86EFAC;color:#166534;}
-.sync-pill.error{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}
-.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
-.btn-ghost{background:white;border:1.5px solid #E2E8F0;border-radius:9px;padding:6px 13px;font-size:12px;color:#475569;font-weight:600;}
-.btn-ghost:hover{background:#F8FAFC;border-color:#CBD5E1;}
+.sp{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid;}
+.sp.local{background:#F8FAFC;border-color:#E2E8F0;color:#64748B;}
+.sp.saving{background:#FFFBEB;border-color:#FCD34D;color:#92400E;}
+.sp.saved{background:#F0FDF4;border-color:#86EFAC;color:#166534;}
+.sp.error{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}
+.hdr-r{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.btn-ghost{background:#fff;border:1.5px solid #E2E8F0;border-radius:9px;padding:6px 13px;font-size:12px;color:#475569;font-weight:600;}
+.btn-ghost:hover{background:#F8FAFC;}
 
-/* ── TABS ── */
-.tab-bar{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;}
+/* TABS */
+.tab-bar{background:#fff;border-bottom:1.5px solid #EAECF0;padding:0 24px;}
 .tab-bar-in{max-width:1400px;margin:0 auto;display:flex;gap:4px;}
-.tab-btn{padding:13px 18px;font-size:13px;font-weight:600;color:#94A3B8;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;}
-.tab-btn.on{color:#6366F1;border-bottom-color:#6366F1;}
-.tab-btn:hover:not(.on){color:#475569;}
+.tb{padding:13px 16px;font-size:13px;font-weight:600;color:#94A3B8;border:none;background:none;border-bottom:2.5px solid transparent;transition:all .15s;white-space:nowrap;}
+.tb.on{color:#6366F1;border-bottom-color:#6366F1;}
+.tb:hover:not(.on){color:#475569;}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{max-width:1400px;margin:0 auto;padding:22px 24px 60px;}
 
-/* ── TODAY ALERT ── */
-.today-alert{background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1.5px solid #C7D2FE;border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
-.ta-title{font-size:13px;font-weight:700;color:#4338CA;margin-bottom:3px;}
-.ta-body{font-size:12px;color:#4F46E5;line-height:1.7;}
+/* TODAY ALERT */
+.ta{background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1.5px solid #C7D2FE;border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+.ta-t{font-size:13px;font-weight:700;color:#4338CA;margin-bottom:3px;}
+.ta-b{font-size:12px;color:#4F46E5;line-height:1.7;}
 
-/* ── STATS ── */
-.stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
-.stat-box{background:white;border-radius:14px;padding:14px 18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);flex:1;min-width:110px;}
-.stat-n{font-size:22px;font-weight:800;}
-.stat-u{font-size:11px;color:#94A3B8;font-weight:600;margin-left:2px;}
-.stat-l{font-size:10px;color:#94A3B8;margin-top:3px;font-weight:500;}
+/* STATS */
+.sr{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.sb2{background:#fff;border-radius:14px;padding:14px 18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);flex:1;min-width:100px;}
+.sn{font-size:22px;font-weight:800;}.su{font-size:11px;color:#94A3B8;font-weight:600;margin-left:2px;}
+.sl{font-size:10px;color:#94A3B8;margin-top:3px;font-weight:500;}
 
-/* ── TOOLBAR ── */
-.toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap;}
+/* TOOLBAR */
+.tlb{display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap;}
 .srch{position:relative;flex:1;max-width:260px;}
-.srch-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8;pointer-events:none;}
-.srch-input{width:100%;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px 9px 32px;font-size:13px;color:#1A202C;}
-.btn-add{background:#6366F1;border:none;border-radius:10px;padding:9px 18px;font-size:13px;color:white;font-weight:700;box-shadow:0 4px 12px rgba(99,102,241,.25);}
+.si{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8;pointer-events:none;}
+.si2{width:100%;background:#fff;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px 9px 32px;font-size:13px;color:#1A202C;}
+.btn-add{background:#6366F1;border:none;border-radius:10px;padding:9px 18px;font-size:13px;color:#fff;font-weight:700;box-shadow:0 4px 12px rgba(99,102,241,.25);}
 .btn-add:hover{background:#5254D4;transform:translateY(-1px);}
 
-/* ── POST-IT GRID ── */
+/* POST-IT GRID */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px;}
-
-/* ── POST-IT CARD ── */
 .pcard{border-radius:12px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);position:relative;display:flex;flex-direction:column;gap:11px;transition:transform .2s,box-shadow .2s;}
-.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.05);}
+.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.12);}
 .pcard::after{content:'';position:absolute;bottom:0;right:0;width:20px;height:20px;background:linear-gradient(225deg,rgba(0,0,0,.09) 50%,transparent 50%);border-radius:0 0 12px 0;}
-
-/* Card header */
 .ch{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
 .cn{flex:1;min-width:0;}
-.nkr{font-size:16px;font-weight:800;color:#1A202C;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.nen{font-size:12px;color:#64748B;font-weight:500;margin-top:2px;}
-.rbadge{font-size:11px;font-weight:700;color:white;padding:3px 9px;border-radius:20px;flex-shrink:0;}
-
-/* Reminder badge */
+.nkr{font-size:15px;font-weight:800;color:#1A202C;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nen{font-size:12px;color:#64748B;font-weight:500;margin-top:1px;}
+.nsub{font-size:10px;color:#94A3B8;margin-top:2px;}
+.rbadge{font-size:11px;font-weight:700;color:#fff;padding:3px 9px;border-radius:20px;flex-shrink:0;}
 .rem-badge{font-size:10px;font-weight:700;background:rgba(99,102,241,.12);color:#4F46E5;border-radius:20px;padding:2px 7px;cursor:pointer;}
-
-/* Payment chips */
-.pay-row{display:flex;gap:6px;flex-wrap:wrap;}
-.pchip{display:flex;align-items:center;gap:4px;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .18s;user-select:none;flex:1;justify-content:center;}
-.pchip:hover{filter:brightness(.97);}
-
-/* Notes area */
 .notes-area{display:flex;flex-direction:column;gap:6px;min-height:32px;}
 .ni{border-radius:8px;padding:8px 10px;position:relative;cursor:default;}
 .ni:hover .nibtn{opacity:1!important;}
@@ -97,128 +80,150 @@ input[type=date]{color-scheme:light;}
 .nibtn{position:absolute;top:5px;right:6px;display:flex;gap:3px;opacity:0;transition:opacity .15s;}
 .nibtn button{border:none;border-radius:5px;padding:2px 6px;font-size:10px;}
 .no-notes{font-size:11px;color:#94A3B8;text-align:center;padding:8px 0;}
-.btn-addnote{width:100%;background:rgba(0,0,0,.04);border:1.5px dashed rgba(0,0,0,.12);border-radius:8px;padding:7px;font-size:11px;color:#64748B;font-weight:600;transition:all .15s;}
-.btn-addnote:hover{background:rgba(0,0,0,.07);}
+.btn-an{width:100%;background:rgba(0,0,0,.04);border:1.5px dashed rgba(0,0,0,.12);border-radius:8px;padding:7px;font-size:11px;color:#64748B;font-weight:600;}
+.btn-an:hover{background:rgba(0,0,0,.07);}
 .cf{display:flex;justify-content:flex-end;}
-.btn-del-card{background:none;border:none;font-size:13px;color:#CBD5E1;padding:3px 6px;border-radius:5px;}
-.btn-del-card:hover{color:#F87171;}
-
-/* Note form */
+.btn-dc{background:none;border:none;font-size:13px;color:#CBD5E1;padding:3px 6px;border-radius:5px;}
+.btn-dc:hover{color:#F87171;}
 .nform{background:rgba(255,255,255,.85);border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:10px 11px;}
 .cpills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;}
 .cpill{border-radius:20px;padding:3px 9px;font-size:10px;font-weight:600;border:1.5px solid;cursor:pointer;transition:all .15s;}
-.nta{width:100%;background:white;border:1px solid #E2E8F0;border-radius:7px;padding:6px 9px;font-size:12px;resize:vertical;min-height:50px;color:#1A202C;line-height:1.5;}
+.nta{width:100%;background:#fff;border:1px solid #E2E8F0;border-radius:7px;padding:6px 9px;font-size:12px;resize:vertical;min-height:50px;color:#1A202C;line-height:1.5;}
 .nfrow{display:flex;gap:6px;align-items:center;margin-top:6px;}
-.ndi{flex:1;border:1px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:11px;color:#64748B;background:white;}
-.btn-ns{background:#6366F1;border:none;border-radius:7px;padding:6px 13px;font-size:11px;color:white;font-weight:700;}
+.ndi{flex:1;border:1px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:11px;color:#64748B;background:#fff;}
+.btn-ns{background:#6366F1;border:none;border-radius:7px;padding:6px 13px;font-size:11px;color:#fff;font-weight:700;}
 .btn-nc{background:#F1F5F9;border:none;border-radius:7px;padding:6px 10px;font-size:11px;color:#64748B;font-weight:600;}
 
-/* ── CALENDAR TAB ── */
+/* PAYMENT TAB */
+.pay-hdr{background:#fff;border-radius:16px;padding:20px 24px;margin-bottom:16px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.pay-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.pay-month{font-size:20px;font-weight:800;color:#1A202C;flex:1;}
+.pay-nbtn{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:6px 14px;font-size:15px;color:#475569;font-weight:700;}
+.pay-stats{display:flex;gap:10px;flex-wrap:wrap;}
+.ps{background:#F8FAFC;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;border:1px solid #F1F5F9;}
+.ps-led{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.ps-t{font-size:12px;font-weight:600;color:#475569;}
+.ps-n{font-size:16px;font-weight:800;margin-left:4px;}
+.pay-list{display:flex;flex-direction:column;gap:8px;}
+.prow{background:#fff;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:1px solid #F1F5F9;box-shadow:0 1px 3px rgba(0,0,0,.03);transition:all .15s;}
+.prow:hover{box-shadow:0 2px 8px rgba(0,0,0,.07);transform:translateY(-1px);}
+.pr-num{font-size:12px;color:#CBD5E1;font-weight:700;width:22px;flex-shrink:0;text-align:center;}
+.pr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pr-info{flex:1;min-width:0;}
+.pr-kr{font-size:14px;font-weight:700;color:#1A202C;}
+.pr-en{font-size:11px;color:#94A3B8;font-weight:500;}
+.pr-meta{font-size:10px;color:#CBD5E1;margin-top:2px;}
+.pr-rate{font-size:12px;font-weight:700;color:#fff;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+.led-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 12px;border-radius:10px;border:1.5px solid;transition:all .18s;flex-shrink:0;}
+.led-wrap:hover{filter:brightness(.96);}
+.led{width:12px;height:12px;border-radius:50%;flex-shrink:0;transition:all .2s;}
+.led-on-blue{background:#3B82F6;box-shadow:0 0 8px rgba(59,130,246,.7);}
+.led-on-green{background:#10B981;box-shadow:0 0 8px rgba(16,185,129,.7);}
+.led-off{background:#E2E8F0;box-shadow:none;}
+.led-txt{font-size:11px;font-weight:700;}
+
+/* CALENDAR TAB */
 .cal-layout{display:grid;grid-template-columns:1fr 310px;gap:18px;}
-.cal-box{background:white;border-radius:16px;padding:24px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
-.cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
-.cal-title{font-size:18px;font-weight:800;color:#1A202C;flex:1;}
-.cal-nbtn{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:6px 13px;font-size:14px;color:#475569;font-weight:700;}
-.cal-nbtn:hover{background:#F1F5F9;}
+.cal-box{background:#fff;border-radius:16px;padding:24px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.cal-nav2{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.cal-title2{font-size:18px;font-weight:800;color:#1A202C;flex:1;}
+.cal-nbtn2{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:6px 13px;font-size:14px;color:#475569;font-weight:700;}
 .cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
 .cal-hd{text-align:center;font-size:11px;font-weight:700;color:#94A3B8;padding:4px 0;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cday{min-height:76px;background:#FAFAFA;border-radius:10px;padding:7px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;position:relative;}
+.cday{min-height:76px;background:#FAFAFA;border-radius:10px;padding:7px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;}
 .cday:hover{background:#F1F5F9;border-color:#E2E8F0;}
 .cday.today{background:#EEF2FF;border-color:#A5B4FC;}
-.cday.other{opacity:.32;}
-.cday.hase{border-color:#C7D2FE;}
+.cday.other{opacity:.32;}.cday.hase{border-color:#C7D2FE;}
 .cdnum{font-size:12px;font-weight:600;color:#475569;margin-bottom:3px;}
-.cday.today .cdnum{background:#6366F1;color:white;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
+.cday.today .cdnum{background:#6366F1;color:#fff;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
 .cevents{display:flex;flex-direction:column;gap:2px;}
 .cetag{font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;}
 .cmore{font-size:9px;color:#94A3B8;font-weight:600;}
-
-/* Sidebar */
-.sb{background:white;border-radius:16px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow-y:auto;max-height:620px;}
-.sb-title{font-size:13px;font-weight:700;color:#1A202C;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.csb{background:#fff;border-radius:16px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow-y:auto;max-height:620px;}
+.csb-t{font-size:13px;font-weight:700;color:#1A202C;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
 .ritem{background:#F8FAFC;border-radius:9px;padding:9px 11px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start;border:1px solid #F1F5F9;border-left:3px solid;}
 .ri-text{font-size:12px;color:#334155;font-weight:500;line-height:1.4;}
 .ri-stu{font-size:10px;color:#6366F1;font-weight:600;margin-top:2px;}
 .ri-date{font-size:10px;color:#94A3B8;font-weight:600;margin-top:1px;}
-.sb-empty{font-size:12px;color:#94A3B8;text-align:center;padding:24px 0;line-height:1.8;}
+.csb-empty{font-size:12px;color:#94A3B8;text-align:center;padding:24px 0;line-height:1.8;}
 
-/* ── REMINDERS TAB ── */
+/* REMINDERS */
 .rtab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.rmc{background:white;border-radius:14px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.rmc{background:#fff;border-radius:14px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .rmc-hdr{font-size:13px;font-weight:800;color:#1A202C;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .rmc-now{background:#EEF2FF;color:#6366F1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
 .rmc-past{font-size:10px;color:#94A3B8;}
 
-/* ── MODALS ── */
+/* MODALS */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;backdrop-filter:blur(3px);}
-.mbox{background:white;border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.15);width:100%;}
-.mtitle{font-size:16px;font-weight:800;color:#1A202C;margin-bottom:3px;}
-.msub{font-size:12px;color:#94A3B8;margin-bottom:20px;}
+.mbox{background:#fff;border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.15);width:100%;}
+.mt{font-size:16px;font-weight:800;color:#1A202C;margin-bottom:3px;}
+.ms{font-size:12px;color:#94A3B8;margin-bottom:20px;}
 .fg{margin-bottom:13px;}
 .fl{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
 .fi{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 13px;font-size:13px;color:#1A202C;}
-.fi:focus{background:white;}
+.fi:focus{background:#fff;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .ma{display:flex;gap:8px;margin-top:6px;}
-.btn-mp{flex:1;background:#6366F1;border:none;border-radius:11px;padding:11px 0;color:white;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(99,102,241,.25);}
+.btn-mp{flex:1;background:#6366F1;border:none;border-radius:11px;padding:11px 0;color:#fff;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(99,102,241,.25);}
 .btn-mp:hover{background:#5254D4;}
-.btn-ms{background:#F1F5F9;border:none;border-radius:11px;padding:11px 18px;color:#64748B;font-weight:600;font-size:13px;}
-.btn-ms:hover{background:#E2E8F0;}
-
-.fb-note{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:11px 14px;font-size:12px;color:#166534;margin-bottom:14px;line-height:1.7;}
-.fb-steps{font-size:12px;color:#475569;line-height:1.9;margin-bottom:14px;}
+.btn-ms2{background:#F1F5F9;border:none;border-radius:11px;padding:11px 18px;color:#64748B;font-weight:600;font-size:13px;}
 code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px;}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="hdr">
-  <div class="hdr-in">
-    <div class="logo-icon">📚</div>
-    <div>
-      <div class="logo-title">Sehee Tutor</div>
-      <div class="logo-sub">Student Dashboard</div>
-    </div>
-    <span id="sync-pill" class="sync-pill local">💾 로컬 저장</span>
-    <div class="hdr-right">
-      <button class="btn-ghost" onclick="openM('mfb')">☁️ Firebase</button>
-    </div>
-  </div>
-</div>
+<div class="hdr"><div class="hdr-in">
+  <div class="logo-icon">📚</div>
+  <div><div class="logo-title">Sehee Tutor</div><div class="logo-sub">Student Dashboard</div></div>
+  <span id="sync-pill" class="sp local">💾 로컬 저장</span>
+  <div class="hdr-r"><button class="btn-ghost" onclick="openM('mfb')">☁️ Firebase</button></div>
+</div></div>
 
-<!-- TABS -->
-<div class="tab-bar">
-  <div class="tab-bar-in">
-    <button class="tab-btn on" onclick="tab('students',this)">📋 학생 관리</button>
-    <button class="tab-btn"    onclick="tab('calendar',this)">📅 캘린더</button>
-    <button class="tab-btn"    onclick="tab('reminders',this)">📌 리마인더</button>
-  </div>
-</div>
+<div class="tab-bar"><div class="tab-bar-in">
+  <button class="tb on"  onclick="tab('notes',this)">📋 학생 노트</button>
+  <button class="tb"     onclick="tab('pay',this)">💰 정산 내역</button>
+  <button class="tb"     onclick="tab('cal',this)">📅 캘린더</button>
+  <button class="tb"     onclick="tab('rem',this)">📌 리마인더</button>
+</div></div>
 
-<!-- MAIN -->
 <div class="main">
   <div id="today-alert" style="display:none"></div>
 
-  <!-- TAB: STUDENTS -->
-  <div id="t-students">
-    <div class="stats-row" id="stats-row"></div>
-    <div class="toolbar">
-      <div class="srch"><span class="srch-icon">🔍</span><input class="srch-input" id="srch" placeholder="학생 검색…" oninput="onSearch(this.value)"></div>
+  <!-- TAB: NOTES -->
+  <div id="t-notes">
+    <div class="sr" id="stats-row"></div>
+    <div class="tlb">
+      <div class="srch"><span class="si">🔍</span><input class="si2" id="srch" placeholder="학생 검색…" oninput="onSearch(this.value)"></div>
       <button class="btn-add" onclick="openM('mstu')">+ 학생 추가</button>
     </div>
     <div id="pgrid" class="pgrid"></div>
   </div>
 
+  <!-- TAB: PAYMENT -->
+  <div id="t-pay" style="display:none">
+    <div class="pay-hdr">
+      <div class="pay-nav">
+        <button class="pay-nbtn" onclick="payGo(-1)">‹</button>
+        <div class="pay-month" id="pay-month-title"></div>
+        <button class="pay-nbtn" onclick="payGo(1)">›</button>
+        <button class="pay-nbtn" style="font-size:11px" onclick="payGoNow()">이번 달</button>
+      </div>
+      <div class="pay-stats" id="pay-stats"></div>
+    </div>
+    <div id="pay-list" class="pay-list"></div>
+  </div>
+
   <!-- TAB: CALENDAR -->
-  <div id="t-calendar" style="display:none">
+  <div id="t-cal" style="display:none">
     <div class="cal-layout">
       <div class="cal-box">
-        <div class="cal-nav">
-          <button class="cal-nbtn" onclick="calGo(-1)">‹</button>
-          <div class="cal-title" id="cal-title"></div>
-          <button class="cal-nbtn" onclick="calGo(1)">›</button>
-          <button class="cal-nbtn" style="font-size:11px" onclick="calNow()">오늘</button>
+        <div class="cal-nav2">
+          <button class="cal-nbtn2" onclick="calGo(-1)">‹</button>
+          <div class="cal-title2" id="cal-title"></div>
+          <button class="cal-nbtn2" onclick="calGo(1)">›</button>
+          <button class="cal-nbtn2" style="font-size:11px" onclick="calNow()">오늘</button>
         </div>
         <div class="cal-hdr">
           <div class="cal-hd" style="color:#EF4444">일</div>
@@ -228,29 +233,33 @@ code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-family:monospace;
         </div>
         <div id="cal-grid" class="cal-grid"></div>
       </div>
-      <div class="sb">
-        <div class="sb-title">📌 <span id="sb-month"></span> 일정</div>
+      <div class="csb">
+        <div class="csb-t">📌 <span id="sb-month"></span> 일정</div>
         <div id="sb-events"></div>
       </div>
     </div>
   </div>
 
   <!-- TAB: REMINDERS -->
-  <div id="t-reminders" style="display:none">
-    <div id="rtab"></div>
-  </div>
+  <div id="t-rem" style="display:none"><div id="rtab"></div></div>
 </div>
 
-<!-- MODAL: ADD STUDENT -->
+<!-- MODAL: ADD/EDIT STUDENT -->
 <div id="mstu" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mstu')">
-  <div class="mbox" style="max-width:370px" onclick="event.stopPropagation()">
-    <div class="mtitle">+ 새 학생 추가</div><div class="msub">학생 정보를 입력해 주세요</div>
-    <div class="fg"><div class="fl">한국 이름</div><input class="fi" id="skr" placeholder="예: 홍길동" onkeydown="if(event.key==='Enter')doAddStu()"></div>
-    <div class="fg"><div class="fl">영어 이름</div><input class="fi" id="sen" placeholder="예: Gildong" onkeydown="if(event.key==='Enter')doAddStu()"></div>
-    <div class="fg"><div class="fl">시급 (만원)</div><input class="fi" id="srate" type="number" min="1" placeholder="예: 9" onkeydown="if(event.key==='Enter')doAddStu()"></div>
+  <div class="mbox" style="max-width:420px" onclick="event.stopPropagation()">
+    <div class="mt" id="mstu-title">+ 새 학생 추가</div><div class="ms">학생 정보를 입력해 주세요</div>
+    <div class="fg-row">
+      <div class="fg"><div class="fl">한국 이름</div><input class="fi" id="skr" placeholder="예: 홍길동"></div>
+      <div class="fg"><div class="fl">영어 이름</div><input class="fi" id="sen" placeholder="예: Gildong"></div>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><div class="fl">학교</div><input class="fi" id="sschool" placeholder="예: KIS, SIS, BFS…"></div>
+      <div class="fg"><div class="fl">학년</div><input class="fi" id="sgrade" placeholder="예: G6, G7…"></div>
+    </div>
+    <div class="fg"><div class="fl">시급 (만원)</div><input class="fi" id="srate" type="number" min="1" placeholder="예: 9"></div>
     <div class="ma">
-      <button class="btn-mp" onclick="doAddStu()">추가</button>
-      <button class="btn-ms" onclick="closeM('mstu')">취소</button>
+      <button class="btn-mp" id="mstu-btn" onclick="doAddStu()">추가</button>
+      <button class="btn-ms2" onclick="closeM('mstu')">취소</button>
     </div>
   </div>
 </div>
@@ -258,131 +267,95 @@ code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-family:monospace;
 <!-- MODAL: ADD EVENT -->
 <div id="mev" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mev')">
   <div class="mbox" style="max-width:380px" onclick="event.stopPropagation()">
-    <div class="mtitle" id="ev-title">📅 일정 추가</div><div class="msub" id="ev-sub"></div>
+    <div class="mt">📅 일정 추가</div><div class="ms" id="ev-sub"></div>
     <div class="fg"><div class="fl">날짜</div><input class="fi" id="ev-date" type="date"></div>
     <div class="fg"><div class="fl">내용</div><input class="fi" id="ev-text" placeholder="예: KIS 판교 입학 면접" onkeydown="if(event.key==='Enter')doAddEvent()"></div>
     <div class="fg"><div class="fl">학생 (선택)</div><select class="fi" id="ev-stu"></select></div>
     <div class="fg"><div class="fl">카테고리</div><div id="ev-cats" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px"></div></div>
-    <div class="ma">
-      <button class="btn-mp" onclick="doAddEvent()">저장</button>
-      <button class="btn-ms" onclick="closeM('mev')">취소</button>
-    </div>
+    <div class="ma"><button class="btn-mp" onclick="doAddEvent()">저장</button><button class="btn-ms2" onclick="closeM('mev')">취소</button></div>
   </div>
 </div>
 
 <!-- MODAL: FIREBASE -->
 <div id="mfb" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mfb')">
-  <div class="mbox" style="max-width:500px;max-height:88vh;overflow-y:auto" onclick="event.stopPropagation()">
-    <div class="mtitle">☁️ Firebase 자동저장 설정</div>
-    <div class="msub">구글 독스처럼 실시간 자동 저장 + 멀티 기기 동기화</div>
-    <div class="fb-note">✅ Firebase 없이도 로컬 저장으로 정상 작동합니다. Firebase는 여러 기기(PC + 폰)에서 동기화할 때 유용해요.</div>
-    <div class="fb-steps">
-      1. <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> 접속<br>
-      2. 새 프로젝트 생성 → Firestore Database 활성화<br>
-      3. 프로젝트 설정 → 웹 앱 추가 → config 복사<br>
-      4. Firestore 규칙: <code>allow read, write: if true;</code> 설정
+  <div class="mbox" style="max-width:460px" onclick="event.stopPropagation()">
+    <div class="mt">☁️ Firebase 상태</div>
+    <div class="ms">Firebase가 자동 연결되어 있어요. 데이터가 클라우드에 실시간 저장됩니다.</div>
+    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:12px 14px;font-size:12px;color:#166534;line-height:1.7;margin-bottom:16px">
+      ✅ Project: student-management-abe1e<br>
+      ✅ 모든 기기에서 자동 동기화<br>
+      ✅ 월별 정산 내역 영구 보존
     </div>
-    <div class="fg"><div class="fl">Firebase Config (JSON 형식)</div>
-      <textarea class="fi" id="fb-cfg" rows="7" style="font-size:11px;font-family:monospace;resize:vertical" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
-    </div>
-    <div class="ma">
-      <button class="btn-mp" onclick="doFbSave()">연결하기</button>
-      <button class="btn-ms" onclick="doFbDisconnect()">연결 해제</button>
-      <button class="btn-ms" onclick="closeM('mfb')">닫기</button>
-    </div>
+    <div class="ma"><button class="btn-mp" onclick="closeM('mfb')">확인</button></div>
   </div>
 </div>
 
 <script>
-/* ═══ CONSTANTS ═══ */
-const PC = [
-  {bg:'#FFDDE8',bd:'#FFC2D4',acc:'#C2185B'},
-  {bg:'#BFE3FF',bd:'#93CAFF',acc:'#1565C0'},
-  {bg:'#FFF9C4',bd:'#FFF176',acc:'#827717'},
-  {bg:'#E8D5F5',bd:'#CEB4E8',acc:'#6A1B9A'},
-  {bg:'#C8F5D5',bd:'#9FE8B7',acc:'#2E7D32'},
-  {bg:'#FFE4B5',bd:'#FFCC80',acc:'#BF360C'},
-  {bg:'#B8F0E8',bd:'#7FE0D0',acc:'#00695C'},
-];
+/* ═══ CONFIG ═══ */
+const FB_CFG={apiKey:"AIzaSyB9dRh77_GKbTVQkSEeuzIUaLyOzlg5NOo",authDomain:"student-management-abe1e.firebaseapp.com",projectId:"student-management-abe1e",storageBucket:"student-management-abe1e.firebasestorage.app",messagingSenderId:"243422354779",appId:"1:243422354779:web:9b42c57dec2c9644058e7e"};
 
-const CATS = {
-  exam:    {i:'📝',l:'시험·테스트',bg:'#FFECEC',bd:'#FFCDD2',c:'#C62828'},
-  class:   {i:'📚',l:'수업내용',   bg:'#E3F2FD',bd:'#BBDEFB',c:'#1565C0'},
-  goal:    {i:'🎯',l:'목표·준비',  bg:'#F3E5F5',bd:'#E1BEE7',c:'#6A1B9A'},
-  general: {i:'📌',l:'일반메모',   bg:'#FFFDE7',bd:'#FFF9C4',c:'#F57F17'},
-};
-
-const CHIP_C={13:'#7C3AED',10:'#0284C7',9:'#0891B2',8:'#059669',7:'#D97706',6:'#EA580C',5:'#64748B'};
-const rC=r=>CHIP_C[r]||CHIP_C[5];
+const PC=[{bg:'#FFDDE8',bd:'#FFC2D4',acc:'#C2185B'},{bg:'#BFE3FF',bd:'#93CAFF',acc:'#1565C0'},{bg:'#FFF9C4',bd:'#FFF176',acc:'#827717'},{bg:'#E8D5F5',bd:'#CEB4E8',acc:'#6A1B9A'},{bg:'#C8F5D5',bd:'#9FE8B7',acc:'#2E7D32'},{bg:'#FFE4B5',bd:'#FFCC80',acc:'#BF360C'},{bg:'#B8F0E8',bd:'#7FE0D0',acc:'#00695C'}];
+const CATS={exam:{i:'📝',l:'시험·테스트',bg:'#FFECEC',bd:'#FFCDD2',c:'#C62828'},class:{i:'📚',l:'수업내용',bg:'#E3F2FD',bd:'#BBDEFB',c:'#1565C0'},goal:{i:'🎯',l:'목표·준비',bg:'#F3E5F5',bd:'#E1BEE7',c:'#6A1B9A'},general:{i:'📌',l:'일반메모',bg:'#FFFDE7',bd:'#FFF9C4',c:'#F57F17'}};
+const CC={13:'#7C3AED',10:'#0284C7',9:'#0891B2',8:'#059669',7:'#D97706',6:'#EA580C',5:'#64748B'};
+const rc=r=>CC[r]||CC[5];
 const MO=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
 const INIT=[
-  {id:'1',kr:'추헨리 & 추엘리',en:'Henry & Ellie',rate:13,ci:0},
-  {id:'2',kr:'최용준',en:'Jun',rate:10,ci:1},{id:'3',kr:'정예교 & 정인교',en:'Eli & Eddy',rate:10,ci:2},
-  {id:'4',kr:'최호재',en:'Hojae',rate:10,ci:3},{id:'5',kr:'이안',en:'Ian',rate:9,ci:4},
-  {id:'6',kr:'신소희',en:'Sohee',rate:9,ci:5},{id:'7',kr:'이윤진',en:'Yoonjin',rate:9,ci:6},
-  {id:'8',kr:'이시안',en:'Cian',rate:9,ci:0},{id:'9',kr:'김무이',en:'Mui',rate:8,ci:1},
-  {id:'10',kr:'김준상',en:'William',rate:8,ci:2},{id:'11',kr:'최은빈',en:'Eunbin',rate:8,ci:3},
-  {id:'12',kr:'신서희',en:'Riley',rate:8,ci:4},{id:'13',kr:'이승원',en:'David',rate:8,ci:5},
-  {id:'14',kr:'박민',en:'Min',rate:8,ci:6},{id:'15',kr:'도온',en:'On',rate:8,ci:0},
-  {id:'16',kr:'도윤',en:'Yoon',rate:8,ci:1},{id:'17',kr:'권서하',en:'Seoha',rate:8,ci:2},
-  {id:'18',kr:'전시우',en:'Daniel',rate:7,ci:3},{id:'19',kr:'박재민',en:'Terence',rate:7,ci:4},
-  {id:'20',kr:'박지아',en:'Jia',rate:7,ci:5},{id:'21',kr:'이윤성',en:'Yoonsung',rate:7,ci:6},
-  {id:'22',kr:'박유민',en:'Yoomin',rate:7,ci:0},{id:'23',kr:'김루카스지원',en:'Lucas',rate:7,ci:1},
-  {id:'24',kr:'임라희',en:'Rahee',rate:7,ci:2},{id:'25',kr:'양승원',en:'Sally',rate:7,ci:3},
-  {id:'26',kr:'우세연',en:'Elena',rate:7,ci:4},{id:'27',kr:'서지우',en:'Jiwoo',rate:7,ci:5},
-  {id:'28',kr:'이제인',en:'Jane',rate:7,ci:6},{id:'29',kr:'서병우',en:'Byeongwoo',rate:7,ci:0},
-  {id:'30',kr:'김태연',en:'Ashley',rate:6,ci:1},{id:'31',kr:'이토니',en:'Tony',rate:6,ci:2},
-  {id:'32',kr:'김지윤',en:'Joann',rate:6,ci:3},{id:'33',kr:'김은재',en:'Edward',rate:6,ci:4},
-  {id:'34',kr:'안세연',en:'Ceyon',rate:6,ci:5},{id:'35',kr:'김태균',en:'Ethan',rate:5,ci:6},
+  {id:'1',kr:'추헨리 & 추엘리',en:'Henry & Ellie',rate:13,ci:0,school:'',grade:''},
+  {id:'2',kr:'최용준',en:'Jun',rate:10,ci:1,school:'',grade:''},{id:'3',kr:'정예교 & 정인교',en:'Eli & Eddy',rate:10,ci:2,school:'',grade:''},
+  {id:'4',kr:'최호재',en:'Hojae',rate:10,ci:3,school:'',grade:''},{id:'5',kr:'이안',en:'Ian',rate:9,ci:4,school:'',grade:''},
+  {id:'6',kr:'신소희',en:'Sohee',rate:9,ci:5,school:'',grade:''},{id:'7',kr:'이윤진',en:'Yoonjin',rate:9,ci:6,school:'',grade:''},
+  {id:'8',kr:'이시안',en:'Cian',rate:9,ci:0,school:'',grade:''},{id:'9',kr:'김무이',en:'Mui',rate:8,ci:1,school:'',grade:''},
+  {id:'10',kr:'김준상',en:'William',rate:8,ci:2,school:'',grade:''},{id:'11',kr:'최은빈',en:'Eunbin',rate:8,ci:3,school:'',grade:''},
+  {id:'12',kr:'신서희',en:'Riley',rate:8,ci:4,school:'',grade:''},{id:'13',kr:'이승원',en:'David',rate:8,ci:5,school:'',grade:''},
+  {id:'14',kr:'박민',en:'Min',rate:8,ci:6,school:'',grade:''},{id:'15',kr:'도온',en:'On',rate:8,ci:0,school:'',grade:''},
+  {id:'16',kr:'도윤',en:'Yoon',rate:8,ci:1,school:'',grade:''},{id:'17',kr:'권서하',en:'Seoha',rate:8,ci:2,school:'',grade:''},
+  {id:'18',kr:'전시우',en:'Daniel',rate:7,ci:3,school:'',grade:''},{id:'19',kr:'박재민',en:'Terence',rate:7,ci:4,school:'',grade:''},
+  {id:'20',kr:'박지아',en:'Jia',rate:7,ci:5,school:'',grade:''},{id:'21',kr:'이윤성',en:'Yoonsung',rate:7,ci:6,school:'',grade:''},
+  {id:'22',kr:'박유민',en:'Yoomin',rate:7,ci:0,school:'',grade:''},{id:'23',kr:'김루카스지원',en:'Lucas',rate:7,ci:1,school:'',grade:''},
+  {id:'24',kr:'임라희',en:'Rahee',rate:7,ci:2,school:'',grade:''},{id:'25',kr:'양승원',en:'Sally',rate:7,ci:3,school:'',grade:''},
+  {id:'26',kr:'우세연',en:'Elena',rate:7,ci:4,school:'',grade:''},{id:'27',kr:'서지우',en:'Jiwoo',rate:7,ci:5,school:'',grade:''},
+  {id:'28',kr:'이제인',en:'Jane',rate:7,ci:6,school:'',grade:''},{id:'29',kr:'서병우',en:'Byeongwoo',rate:7,ci:0,school:'',grade:''},
+  {id:'30',kr:'김태연',en:'Ashley',rate:6,ci:1,school:'',grade:''},{id:'31',kr:'이토니',en:'Tony',rate:6,ci:2,school:'',grade:''},
+  {id:'32',kr:'김지윤',en:'Joann',rate:6,ci:3,school:'',grade:''},{id:'33',kr:'김은재',en:'Edward',rate:6,ci:4,school:'',grade:''},
+  {id:'34',kr:'안세연',en:'Ceyon',rate:6,ci:5,school:'',grade:''},{id:'35',kr:'김태균',en:'Ethan',rate:5,ci:6,school:'',grade:''},
 ];
 
 const uid=()=>`${Date.now()}${Math.random().toString(36).slice(2,5)}`;
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const nd=new Date();
-const MK=`${nd.getFullYear()}_${String(nd.getMonth()+1).padStart(2,'0')}`;
 const todayStr=`${nd.getFullYear()}-${String(nd.getMonth()+1).padStart(2,'0')}-${String(nd.getDate()).padStart(2,'0')}`;
 
 /* ═══ STATE ═══ */
-let S=JSON.parse(localStorage.getItem('v2_s')||'null')||INIT;
-let N=JSON.parse(localStorage.getItem('v2_n')||'{}');
-let P=JSON.parse(localStorage.getItem('v2_p_'+MK)||'{}');
-let CAL=JSON.parse(localStorage.getItem('v2_c')||'{}');
-
-let addNF=null,editNR=null,selCat={},activeTab='students',srch='';
+let S=JSON.parse(localStorage.getItem('v3_s')||'null')||INIT;
+let N=JSON.parse(localStorage.getItem('v3_n')||'{}');
+let PAY=JSON.parse(localStorage.getItem('v3_pay')||'{}'); // {mk:{sid:{paid,msgSent}}}
+let CAL=JSON.parse(localStorage.getItem('v3_c')||'{}');
+let addNF=null,editNR=null,selCat={},srch='',evCat='general',db=null,saveT=null;
 let calM=new Date(nd.getFullYear(),nd.getMonth(),1);
-let evCat='general',db=null,saveT=null;
+let payM=new Date(nd.getFullYear(),nd.getMonth(),1);
+let editStuId=null;
+
+/* ═══ HELPERS ═══ */
+const mkOf=d=>`${d.getFullYear()}_${String(d.getMonth()+1).padStart(2,'0')}`;
+const curPay=()=>PAY[mkOf(payM)]||{};
+const getPS=(mk,sid)=>(PAY[mk]||{})[sid]||{paid:false,msgSent:false};
 
 /* ═══ FIREBASE ═══ */
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyB9dRh77_GKbTVQkSEeuzIUaLyOzlg5NOo",
-  authDomain: "student-management-abe1e.firebaseapp.com",
-  projectId: "student-management-abe1e",
-  storageBucket: "student-management-abe1e.firebasestorage.app",
-  messagingSenderId: "243422354779",
-  appId: "1:243422354779:web:9b42c57dec2c9644058e7e",
-  measurementId: "G-QFNE85QQEZ"
-};
-
 function initFB(){
   if(typeof firebase==='undefined') return;
   try{
-    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-    db=firebase.firestore();
-    loadFB();
-    setSP('saved','☁️ Firebase 연결됨');
+    if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    db=firebase.firestore(); loadFB(); setSP('saved','☁️ Firebase 연결됨');
   }catch(e){setSP('error','Firebase 오류');console.error(e);}
 }
 async function loadFB(){
   if(!db) return;
-  const col=db.collection('sehee');
-  const snap=await col.doc('main').get().catch(()=>null);
+  const snap=await db.collection('sehee').doc('v3').get().catch(()=>null);
   if(snap&&snap.exists){
     const d=snap.data();
-    if(d.s) S=d.s;
-    if(d.n) N=d.n;
-    if(d.c) CAL=d.c;
-    if(d['p_'+MK]) P=d['p_'+MK];
-    saveLocal(); render(); renderCal(); renderRTab();
+    if(d.s) S=d.s; if(d.n) N=d.n; if(d.pay) PAY=d.pay; if(d.c) CAL=d.c;
+    saveLocal(); render(); renderPay(); renderCal(); renderRTab();
   }
 }
 async function fbSave(){
@@ -390,35 +363,53 @@ async function fbSave(){
   if(!db){setSP('local','💾 저장됨');return;}
   try{
     setSP('saving','✏️ 저장 중…');
-    await db.collection('sehee').doc('main').set({s:S,n:N,c:CAL,['p_'+MK]:P},{merge:true});
+    await db.collection('sehee').doc('v3').set({s:S,n:N,pay:PAY,c:CAL},{merge:true});
     setSP('saved','☁️ 저장됨');
   }catch(e){setSP('error','저장 오류');}
 }
 function sched(){clearTimeout(saveT);setSP('saving','✏️ 저장 중…');saveT=setTimeout(fbSave,900);}
 function saveLocal(){
-  localStorage.setItem('v2_s',JSON.stringify(S));
-  localStorage.setItem('v2_n',JSON.stringify(N));
-  localStorage.setItem('v2_p_'+MK,JSON.stringify(P));
-  localStorage.setItem('v2_c',JSON.stringify(CAL));
+  localStorage.setItem('v3_s',JSON.stringify(S));
+  localStorage.setItem('v3_n',JSON.stringify(N));
+  localStorage.setItem('v3_pay',JSON.stringify(PAY));
+  localStorage.setItem('v3_c',JSON.stringify(CAL));
 }
-function setSP(t,txt){const e=document.getElementById('sync-pill');if(e){e.className='sync-pill '+t;e.textContent=txt;}}
-function doFbSave(){ closeM('mfb'); }
-function doFbDisconnect(){ closeM('mfb'); }
+function setSP(t,txt){const e=document.getElementById('sync-pill');if(e){e.className='sp '+t;e.textContent=txt;}}
 
 /* ═══ STUDENT OPS ═══ */
 function doAddStu(){
   const kr=document.getElementById('skr').value.trim();
   const en=document.getElementById('sen').value.trim();
   const rate=+document.getElementById('srate').value;
+  const school=document.getElementById('sschool').value.trim();
+  const grade=document.getElementById('sgrade').value.trim();
   if(!kr||!en||!rate) return;
-  S.push({id:uid(),kr,en,rate,ci:S.length%PC.length});
-  ['skr','sen','srate'].forEach(id=>document.getElementById(id).value='');
-  closeM('mstu'); sched(); render();
+  if(editStuId){
+    S=S.map(s=>s.id===editStuId?{...s,kr,en,rate,school,grade}:s);
+    editStuId=null;
+  } else {
+    S.push({id:uid(),kr,en,rate,ci:S.length%PC.length,school,grade});
+  }
+  ['skr','sen','srate','sschool','sgrade'].forEach(id=>document.getElementById(id).value='');
+  closeM('mstu'); sched(); render(); renderPay();
+}
+function openEditStu(id){
+  const s=S.find(x=>x.id===id); if(!s) return;
+  editStuId=id;
+  document.getElementById('skr').value=s.kr;
+  document.getElementById('sen').value=s.en;
+  document.getElementById('srate').value=s.rate;
+  document.getElementById('sschool').value=s.school||'';
+  document.getElementById('sgrade').value=s.grade||'';
+  document.getElementById('mstu-title').textContent='✏️ 학생 정보 수정';
+  document.getElementById('mstu-btn').textContent='저장';
+  openM('mstu');
 }
 function delStu(id){
   if(!confirm('이 학생을 삭제할까요?')) return;
-  S=S.filter(s=>s.id!==id); delete N[id]; delete P[id];
-  sched(); render();
+  S=S.filter(s=>s.id!==id); delete N[id];
+  Object.keys(PAY).forEach(mk=>{ if(PAY[mk][id]) delete PAY[mk][id]; });
+  sched(); render(); renderPay();
 }
 
 /* ═══ NOTE OPS ═══ */
@@ -442,30 +433,27 @@ function doUN(sid,nid){
   if(N[sid]) N[sid]=N[sid].map(n=>n.id===nid?{...n,text:t,date:d||null,category:c}:n);
   editNR=null; sched(); render();
 }
-function delN(sid,nid){
-  if(N[sid]) N[sid]=N[sid].filter(n=>n.id!==nid);
-  sched(); render();
-}
+function delN(sid,nid){if(N[sid])N[sid]=N[sid].filter(n=>n.id!==nid);sched();render();}
 function setCat(sid,cat){
   selCat[sid]=cat;
   const row=document.getElementById('cr-'+sid); if(!row) return;
   row.dataset.sel=cat;
   row.querySelectorAll('.cpill').forEach(b=>{
     const k=b.dataset.cat,v=CATS[k],on=k===cat;
-    b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';
+    b.style.background=on?v.bg:'white';b.style.borderColor=on?v.bd:'#E2E8F0';b.style.color=on?v.c:'#94A3B8';
   });
 }
 
 /* ═══ PAYMENT OPS ═══ */
-function togP(sid,type){
-  if(!P[sid])P[sid]={paid:false,msgSent:false};
-  P[sid][type]=!P[sid][type]; sched();
-  const paid=P[sid].paid,msg=P[sid].msgSent;
-  ['pay','msg'].forEach(t=>{
-    const e=document.getElementById('pc-'+t+'-'+sid); if(e) e.outerHTML=buildPC(sid,t);
-  });
-  updateStats();
+function togP(sid,field){
+  const mk=mkOf(payM);
+  if(!PAY[mk])PAY[mk]={};
+  if(!PAY[mk][sid])PAY[mk][sid]={paid:false,msgSent:false};
+  PAY[mk][sid][field]=!PAY[mk][sid][field];
+  sched(); renderPay();
 }
+function payGo(d){payM=new Date(payM.getFullYear(),payM.getMonth()+d,1);renderPay();}
+function payGoNow(){payM=new Date(nd.getFullYear(),nd.getMonth(),1);renderPay();}
 
 /* ═══ CALENDAR OPS ═══ */
 function openEv(ds){
@@ -484,7 +472,7 @@ function openEv(ds){
 function updEvCats(){
   document.getElementById('ev-cats').querySelectorAll('.cpill').forEach(b=>{
     const k=b.dataset.cat,v=CATS[k],on=k===evCat;
-    b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';
+    b.style.background=on?v.bg:'white';b.style.borderColor=on?v.bd:'#E2E8F0';b.style.color=on?v.c:'#94A3B8';
   });
 }
 function doAddEvent(){
@@ -492,43 +480,34 @@ function doAddEvent(){
   const tx=document.getElementById('ev-text').value.trim();
   const si=document.getElementById('ev-stu').value;
   if(!dt||!tx) return;
-  if(!CAL[dt]) CAL[dt]=[];
+  if(!CAL[dt])CAL[dt]=[];
   CAL[dt].push({id:uid(),text:tx,studentId:si||null,category:evCat||'general',ts:Date.now()});
   closeM('mev'); sched(); renderCal(); renderRTab();
 }
-function delEv(ds,eid){
-  if(CAL[ds]) CAL[ds]=CAL[ds].filter(e=>e.id!==eid);
-  sched(); renderCal(); renderRTab();
-}
+function delEv(ds,eid){if(CAL[ds])CAL[ds]=CAL[ds].filter(e=>e.id!==eid);sched();renderCal();renderRTab();}
 function calGo(d){calM=new Date(calM.getFullYear(),calM.getMonth()+d,1);renderCal();}
 function calNow(){calM=new Date(nd.getFullYear(),nd.getMonth(),1);renderCal();}
 
-/* ═══ MODAL ═══ */
-function openM(id){const e=document.getElementById(id);if(e)e.style.display='flex';}
-function closeM(id){const e=document.getElementById(id);if(e)e.style.display='none';}
-
-/* ═══ TABS ═══ */
+/* ═══ MODAL / TABS ═══ */
+function openM(id){
+  if(id==='mstu'&&!editStuId){
+    document.getElementById('mstu-title').textContent='+ 새 학생 추가';
+    document.getElementById('mstu-btn').textContent='추가';
+  }
+  document.getElementById(id).style.display='flex';
+}
+function closeM(id){document.getElementById(id).style.display='none';if(id==='mstu'){editStuId=null;['skr','sen','srate','sschool','sgrade'].forEach(x=>document.getElementById(x).value='');}}
 function tab(t,btn){
-  activeTab=t;
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  ['students','calendar','reminders'].forEach(x=>document.getElementById('t-'+x).style.display=x===t?'block':'none');
-  if(t==='calendar') renderCal();
-  if(t==='reminders') renderRTab();
+  ['notes','pay','cal','rem'].forEach(x=>document.getElementById('t-'+x).style.display=x===t?'block':'none');
+  if(t==='cal') renderCal();
+  if(t==='rem') renderRTab();
+  if(t==='pay') renderPay();
 }
 function onSearch(v){srch=v;render();}
 
 /* ═══ BUILDERS ═══ */
-function buildPC(sid,type){
-  const py=P[sid]||{paid:false,msgSent:false};
-  const on=type==='pay'?py.paid:py.msgSent;
-  const [yl,nl,field]=type==='pay'?['✓ 입금','미입금','paid']:['✉️ 전송','미전송','msgSent'];
-  const [ys,ns]=type==='pay'
-    ?['background:#D1FAE5;border-color:#6EE7B7;color:#065F46','background:#FFFBEB;border-color:#FCD34D;color:#92400E']
-    :['background:#DBEAFE;border-color:#93C5FD;color:#1E40AF','background:#F1F5F9;border-color:#CBD5E1;color:#64748B'];
-  return `<div id="pc-${type}-${sid}" class="pchip" onclick="togP('${sid}','${field}')" style="${on?ys:ns}">${on?yl:nl}</div>`;
-}
-
 function buildCR(sid,sel){
   const s=sel||'general';
   return `<div class="cpills" id="cr-${sid}" data-sel="${s}">
@@ -538,20 +517,16 @@ function buildCR(sid,sel){
         ${v.i} ${v.l}</button>`).join('')}
   </div>`;
 }
-
 function buildNF(sid,init){
   const act=init?`doUN('${sid}','${init.id}')`:`doAN('${sid}')`;
-  return `<div class="nform">
-    ${buildCR(sid,init?.category)}
+  return `<div class="nform">${buildCR(sid,init?.category)}
     <textarea class="nta" id="nt-${sid}" placeholder="메모 내용 입력…">${esc(init?.text||'')}</textarea>
     <div class="nfrow">
       <input type="date" class="ndi" id="nd-${sid}" value="${init?.date||''}">
       <button class="btn-ns" onclick="${act}">저장</button>
       <button class="btn-nc" onclick="cancelNF()">✕</button>
-    </div>
-  </div>`;
+    </div></div>`;
 }
-
 function buildNC(sid,n){
   const isE=editNR?.sid===sid&&editNR?.nid===n.id;
   if(isE) return buildNF(sid,n);
@@ -562,79 +537,118 @@ function buildNC(sid,n){
     <div class="nibtn">
       <button onclick="openEN('${sid}','${n.id}')" style="background:rgba(0,0,0,.06);color:#475569">✏️</button>
       <button onclick="delN('${sid}','${n.id}')" style="background:rgba(220,38,38,.08);color:#DC2626">✕</button>
-    </div>
-  </div>`;
+    </div></div>`;
 }
-
 function buildCard(s,idx){
   const c=PC[s.ci!==undefined?s.ci:idx%PC.length];
   const sN=N[s.id]||[];
   const isA=addNF===s.id;
-  // Upcoming reminders count
   const remCnt=[...sN.filter(n=>n.date&&n.date>=todayStr),...Object.entries(CAL).flatMap(([d,ev])=>ev.filter(e=>e.studentId===s.id&&d>=todayStr))].length;
-  
+  const curMK=mkOf(new Date(nd.getFullYear(),nd.getMonth(),1));
+  const ps=getPS(curMK,s.id);
+  const paidDot=ps.paid?'background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.6)':'background:#E2E8F0';
+  const msgDot=ps.msgSent?'background:#3B82F6;box-shadow:0 0 6px rgba(59,130,246,.6)':'background:#E2E8F0';
+
   return `<div class="pcard" style="background:${c.bg};border:1.5px solid ${c.bd}">
     <div class="ch">
       <div class="cn">
         <div class="nkr">${esc(s.kr)}</div>
         <div class="nen">${esc(s.en)}</div>
+        <div class="nsub">${s.grade?esc(s.grade):''}${s.grade&&s.school?' · ':''}${s.school?esc(s.school):''}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
-        <span class="rbadge" style="background:${c.bg};color:${c.acc};border:1.5px solid ${c.bd}">${s.rate}만원</span>
-        ${remCnt>0?`<span class="rem-badge" onclick="tab('reminders',document.querySelectorAll('.tab-btn')[2])">📅 ${remCnt}</span>`:''}
+        <span class="rbadge" style="background:${rc(s.rate)}">${s.rate}만원</span>
+        <div style="display:flex;gap:5px;align-items:center">
+          <span style="font-size:9px;color:#94A3B8">문자</span><div style="width:8px;height:8px;border-radius:50%;${msgDot}"></div>
+          <span style="font-size:9px;color:#94A3B8">입금</span><div style="width:8px;height:8px;border-radius:50%;${paidDot}"></div>
+        </div>
+        ${remCnt>0?`<span class="rem-badge" onclick="tab('rem',document.querySelectorAll('.tb')[3])">📅 ${remCnt}</span>`:''}
       </div>
-    </div>
-    <div class="pay-row">
-      ${buildPC(s.id,'msg')}
-      ${buildPC(s.id,'pay')}
     </div>
     <div class="notes-area">
       ${isA?buildNF(s.id,null):''}
       ${sN.length===0&&!isA?'<div class="no-notes">메모 없음</div>':''}
       ${sN.map(n=>buildNC(s.id,n)).join('')}
     </div>
-    ${!isA?`<button class="btn-addnote" onclick="openNF('${s.id}')">+ 메모 추가</button>`:''}
-    <div class="cf"><button class="btn-del-card" onclick="delStu('${s.id}')" title="학생 삭제">🗑</button></div>
+    ${!isA?`<button class="btn-an" onclick="openNF('${s.id}')">+ 메모 추가</button>`:''}
+    <div class="cf" style="gap:6px">
+      <button onclick="openEditStu('${s.id}')" style="background:none;border:none;font-size:13px;color:#CBD5E1;padding:3px 6px;border-radius:5px;" onmouseover="this.style.color='#6366F1'" onmouseout="this.style.color='#CBD5E1'">✏️</button>
+      <button class="btn-dc" onclick="delStu('${s.id}')">🗑</button>
+    </div>
   </div>`;
 }
 
-/* ═══ STATS ═══ */
+/* ═══ RENDER NOTES ═══ */
 function updateStats(){
   const tot=S.length;
   const avg=tot?(S.reduce((a,s)=>a+s.rate,0)/tot).toFixed(1):0;
   const maxR=tot?Math.max(...S.map(s=>s.rate)):0;
-  const paidN=Object.values(P).filter(p=>p.paid).length;
-  const msgN =Object.values(P).filter(p=>p.msgSent).length;
+  const curMK=mkOf(new Date(nd.getFullYear(),nd.getMonth(),1));
+  const paidN=S.filter(s=>(PAY[curMK]||{})[s.id]?.paid).length;
+  const msgN=S.filter(s=>(PAY[curMK]||{})[s.id]?.msgSent).length;
   document.getElementById('stats-row').innerHTML=[
     {v:tot,u:'명',l:'총 학생',col:'#6366F1'},
     {v:avg,u:'만원',l:'평균 시급',col:'#059669'},
     {v:maxR,u:'만원',l:'최고 시급',col:'#7C3AED'},
-    {v:paidN+'/'+tot,u:'',l:'💰 입금 완료',col:paidN===tot&&tot>0?'#059669':'#D97706'},
-    {v:msgN+'/'+tot,u:'',l:'✉️ 정산문자 전송',col:msgN===tot&&tot>0?'#0891B2':'#94A3B8'},
-  ].map(x=>`<div class="stat-box"><div><span class="stat-n" style="color:${x.col}">${x.v}</span><span class="stat-u">${x.u}</span></div><div class="stat-l">${x.l}</div></div>`).join('');
+    {v:paidN+'/'+tot,u:'',l:'💰 이번 달 입금',col:paidN===tot&&tot>0?'#059669':'#D97706'},
+    {v:msgN+'/'+tot,u:'',l:'✉️ 이번 달 문자',col:msgN===tot&&tot>0?'#0891B2':'#94A3B8'},
+  ].map(x=>`<div class="sb2"><div><span class="sn" style="color:${x.col}">${x.v}</span><span class="su">${x.u}</span></div><div class="sl">${x.l}</div></div>`).join('');
 }
-
-/* ═══ TODAY ALERT ═══ */
 function renderAlert(){
   const ev=CAL[todayStr]||[];
   const el=document.getElementById('today-alert');
   if(!ev.length){el.style.display='none';return;}
   el.style.display='flex';
-  el.innerHTML=`<div style="font-size:20px">🔔</div>
-    <div>
-      <div class="ta-title">오늘의 일정 (${ev.length}개)</div>
-      <div class="ta-body">${ev.map(e=>{const st=e.studentId?S.find(s=>s.id===e.studentId):null;return(st?`[${esc(st.en)}] `:'')+esc(e.text);}).join('<br>')}</div>
-    </div>`;
+  el.innerHTML=`<div style="font-size:20px">🔔</div><div><div class="ta-t">오늘의 일정 (${ev.length}개)</div><div class="ta-b">${ev.map(e=>{const st=e.studentId?S.find(s=>s.id===e.studentId):null;return(st?`[${esc(st.en)}] `:'')+esc(e.text);}).join('<br>')}</div></div>`;
 }
-
-/* ═══ RENDER STUDENTS ═══ */
 function render(){
   const q=srch.toLowerCase();
   const f=S.filter(s=>!q||s.kr.includes(q)||s.en.toLowerCase().includes(q)).sort((a,b)=>b.rate-a.rate);
   document.getElementById('pgrid').innerHTML=f.length
     ?f.map((s,i)=>buildCard(s,i)).join('')
-    :`<div style="grid-column:1/-1;text-align:center;padding:48px;background:white;border-radius:16px;color:#94A3B8;font-size:13px">검색 결과가 없습니다</div>`;
+    :`<div style="grid-column:1/-1;text-align:center;padding:48px;background:#fff;border-radius:16px;color:#94A3B8;font-size:13px">검색 결과가 없습니다</div>`;
   updateStats(); renderAlert();
+}
+
+/* ═══ RENDER PAYMENT ═══ */
+function renderPay(){
+  const mk=mkOf(payM);
+  const isNow=mk===mkOf(new Date(nd.getFullYear(),nd.getMonth(),1));
+  document.getElementById('pay-month-title').textContent=`${payM.getFullYear()}년 ${MO[payM.getMonth()]}${isNow?' ★':''}`;
+  const sorted=[...S].sort((a,b)=>b.rate-a.rate);
+  const paidN=sorted.filter(s=>(PAY[mk]||{})[s.id]?.paid).length;
+  const msgN=sorted.filter(s=>(PAY[mk]||{})[s.id]?.msgSent).length;
+  const tot=sorted.length;
+
+  document.getElementById('pay-stats').innerHTML=`
+    <div class="ps"><div class="ps-led" style="background:#3B82F6;box-shadow:0 0 8px rgba(59,130,246,.6)"></div><span class="ps-t">정산문자 전송</span><span class="ps-n" style="color:#3B82F6">${msgN}/${tot}</span></div>
+    <div class="ps"><div class="ps-led" style="background:#10B981;box-shadow:0 0 8px rgba(16,185,129,.6)"></div><span class="ps-t">입금 완료</span><span class="ps-n" style="color:#10B981">${paidN}/${tot}</span></div>
+    <div class="ps"><div class="ps-led" style="background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,.5)"></div><span class="ps-t">미입금</span><span class="ps-n" style="color:#F59E0B">${tot-paidN}</span></div>`;
+
+  document.getElementById('pay-list').innerHTML=sorted.map((s,i)=>{
+    const ps=getPS(mk,s.id);
+    const msgOn=ps.msgSent, paidOn=ps.paid;
+    const c=PC[s.ci!==undefined?s.ci:i%PC.length];
+    return `<div class="prow">
+      <div class="pr-num">${i+1}</div>
+      <div class="pr-dot" style="background:${rc(s.rate)};box-shadow:0 0 6px ${rc(s.rate)}80"></div>
+      <div class="pr-info">
+        <div class="pr-kr">${esc(s.kr)}</div>
+        <div class="pr-en">${esc(s.en)}${s.grade||s.school?' · '+[s.grade,s.school].filter(Boolean).join(' '):''}</div>
+      </div>
+      <span class="pr-rate" style="background:${rc(s.rate)}">${s.rate}만원</span>
+      <div class="led-wrap" onclick="togP('${s.id}','msgSent')"
+        style="background:${msgOn?'#EFF6FF':'#F8FAFC'};border-color:${msgOn?'#93C5FD':'#E2E8F0'}">
+        <div class="led ${msgOn?'led-on-blue':'led-off'}"></div>
+        <span class="led-txt" style="color:${msgOn?'#1D4ED8':'#94A3B8'}">${msgOn?'✉️ 전송':'미전송'}</span>
+      </div>
+      <div class="led-wrap" onclick="togP('${s.id}','paid')"
+        style="background:${paidOn?'#F0FDF4':'#F8FAFC'};border-color:${paidOn?'#6EE7B7':'#E2E8F0'}">
+        <div class="led ${paidOn?'led-on-green':'led-off'}"></div>
+        <span class="led-txt" style="color:${paidOn?'#065F46':'#94A3B8'}">${paidOn?'✓ 입금':'미입금'}</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ═══ RENDER CALENDAR ═══ */
@@ -642,107 +656,69 @@ function renderCal(){
   const y=calM.getFullYear(),m=calM.getMonth();
   document.getElementById('cal-title').textContent=`${y}년 ${MO[m]}`;
   document.getElementById('sb-month').textContent=MO[m];
-  const first=new Date(y,m,1).getDay();
-  const dim=new Date(y,m+1,0).getDate();
+  const first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
   const total=Math.ceil((first+dim)/7)*7;
   let html='';
   for(let i=0;i<total;i++){
-    let dn,ds,om=false;
-    const col=i%7;
+    let dn,ds,om=false;const col=i%7;
     if(i<first){dn=new Date(y,m,0).getDate()-first+i+1;const pm=m===0?12:m,py=m===0?y-1:y;ds=`${py}-${String(pm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}
     else if(i<first+dim){dn=i-first+1;ds=`${y}-${String(m+1).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;}
     else{dn=i-first-dim+1;const nm=m===11?1:m+2,ny=m===11?y+1:y;ds=`${ny}-${String(nm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}
     const isT=!om&&ds===todayStr;
-    // Events for this day (cal + notes with date)
     const cev=CAL[ds]||[];
-    const nev=S.flatMap(s=>(N[s.id]||[]).filter(n=>n.date===ds).map(n=>({...n,_student:s,fromNote:true})));
-    const allEv=[...cev,...nev];
-    const hasE=allEv.length>0;
+    const nev=S.flatMap(s=>(N[s.id]||[]).filter(n=>n.date===ds).map(n=>({...n,fromNote:true})));
+    const allEv=[...cev,...nev];const hasE=allEv.length>0;
     html+=`<div class="cday${isT?' today':''}${om?' other':''}${hasE?' hase':''}" onclick="openEv('${ds}')">
       <div class="cdnum" style="${!isT&&col===0?'color:#EF4444':!isT&&col===6?'color:#3B82F6':''}">${dn}</div>
       <div class="cevents">
         ${allEv.slice(0,2).map(e=>{const c=CATS[e.category]||CATS.general;return`<div class="cetag" style="background:${c.bg};color:${c.c};border:1px solid ${c.bd}">${c.i} ${esc((e.text||'').slice(0,9))}${(e.text||'').length>9?'…':''}</div>`;}).join('')}
         ${allEv.length>2?`<div class="cmore">+${allEv.length-2}개</div>`:''}
-      </div>
-    </div>`;
+      </div></div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
   renderSB();
 }
-
 function renderSB(){
   const y=calM.getFullYear(),m=calM.getMonth();
   const evs=[];
-  for(const [ds,arr] of Object.entries(CAL)){
-    const d=new Date(ds+'T00:00:00');
-    if(d.getFullYear()===y&&d.getMonth()===m) arr.forEach(e=>evs.push({...e,date:ds,d}));
-  }
-  S.forEach(s=>(N[s.id]||[]).forEach(n=>{
-    if(n.date){const d=new Date(n.date+'T00:00:00');if(d.getFullYear()===y&&d.getMonth()===m)evs.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}
-  }));
+  for(const [ds,arr] of Object.entries(CAL)){const d=new Date(ds+'T00:00:00');if(d.getFullYear()===y&&d.getMonth()===m)arr.forEach(e=>evs.push({...e,date:ds,d}));}
+  S.forEach(s=>(N[s.id]||[]).forEach(n=>{if(n.date){const d=new Date(n.date+'T00:00:00');if(d.getFullYear()===y&&d.getMonth()===m)evs.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}}));
   evs.sort((a,b)=>a.d-b.d);
-  if(!evs.length){document.getElementById('sb-events').innerHTML=`<div class="sb-empty">이 달에 일정이 없습니다<br><small>날짜를 클릭하면 추가할 수 있어요</small></div>`;return;}
+  if(!evs.length){document.getElementById('sb-events').innerHTML=`<div class="csb-empty">이 달에 일정이 없습니다<br><small>날짜를 클릭하면 추가할 수 있어요</small></div>`;return;}
   document.getElementById('sb-events').innerHTML=evs.map(e=>{
-    const c=CATS[e.category]||CATS.general;
-    const st=e.studentId?S.find(s=>s.id===e.studentId):null;
+    const c=CATS[e.category]||CATS.general;const st=e.studentId?S.find(s=>s.id===e.studentId):null;
     return`<div class="ritem" style="border-left-color:${c.c}">
       <span style="font-size:14px;flex-shrink:0">${c.i}</span>
-      <div style="flex:1;min-width:0">
-        <div class="ri-text">${esc(e.text)}</div>
-        ${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}
-        <div class="ri-date">📅 ${e.date}</div>
-      </div>
+      <div style="flex:1;min-width:0"><div class="ri-text">${esc(e.text)}</div>${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}<div class="ri-date">📅 ${e.date}</div></div>
       ${!e.fromNote?`<button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0">✕</button>`:''}
     </div>`;
   }).join('');
 }
 
-/* ═══ REMINDERS TAB ═══ */
+/* ═══ RENDER REMINDERS ═══ */
 function renderRTab(){
   const tm=nd.getMonth()+1,ty=nd.getFullYear();
   const map={};
-  // Calendar events
-  for(const [ds,arr] of Object.entries(CAL)){
-    const d=new Date(ds+'T00:00:00');
-    const k=`${d.getFullYear()}_${d.getMonth()+1}`;
-    if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};
-    arr.forEach(e=>map[k].items.push({...e,date:ds,d}));
-  }
-  // Notes with dates
-  S.forEach(s=>(N[s.id]||[]).forEach(n=>{
-    if(n.date){const d=new Date(n.date+'T00:00:00');const k=`${d.getFullYear()}_${d.getMonth()+1}`;
-    if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};
-    map[k].items.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}
-  }));
+  for(const [ds,arr] of Object.entries(CAL)){const d=new Date(ds+'T00:00:00');const k=`${d.getFullYear()}_${d.getMonth()+1}`;if(!map[k])map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};arr.forEach(e=>map[k].items.push({...e,date:ds,d}));}
+  S.forEach(s=>(N[s.id]||[]).forEach(n=>{if(n.date){const d=new Date(n.date+'T00:00:00');const k=`${d.getFullYear()}_${d.getMonth()+1}`;if(!map[k])map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};map[k].items.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}}));
   const keys=Object.keys(map).sort();
-  if(!keys.length){document.getElementById('rtab').innerHTML='<div style="text-align:center;padding:60px;color:#94A3B8;font-size:13px">📅 아직 일정이 없습니다<br><small style="display:block;margin-top:6px;font-size:11px">캘린더 탭에서 날짜를 클릭해 추가하거나,<br>학생 카드 메모에 날짜를 입력해 보세요!</small></div>';return;}
+  if(!keys.length){document.getElementById('rtab').innerHTML='<div style="text-align:center;padding:60px;color:#94A3B8;font-size:13px">📅 아직 일정이 없습니다<br><small style="display:block;margin-top:6px;font-size:11px">캘린더나 학생 메모에 날짜를 입력해 보세요!</small></div>';return;}
   document.getElementById('rtab').innerHTML=`<div class="rtab-grid">${keys.map(k=>{
-    const g=map[k];
-    const isNow=g.y===ty&&g.m===tm;
-    const isPast=new Date(g.y,g.m-1)<new Date(ty,tm-1);
+    const g=map[k];const isNow=g.y===ty&&g.m===tm;const isPast=new Date(g.y,g.m-1)<new Date(ty,tm-1);
     g.items.sort((a,b)=>a.d-b.d);
     return`<div class="rmc" style="${isNow?'border:2px solid #A5B4FC':''}${isPast?'opacity:.55':''}">
       <div class="rmc-hdr">${g.y}년 ${MO[g.m-1]} ${isNow?'<span class="rmc-now">이번 달 ★</span>':''} ${isPast?'<span class="rmc-past">(지난 달)</span>':''}</div>
-      ${g.items.map(e=>{
-        const c=CATS[e.category]||CATS.general;
-        const st=e.studentId?S.find(s=>s.id===e.studentId):null;
-        return`<div class="ritem" style="border-left-color:${c.c}">
-          <span style="font-size:13px;flex-shrink:0">${c.i}</span>
-          <div style="flex:1;min-width:0">
-            <div class="ri-text">${esc(e.text)}</div>
-            ${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}
-            <div class="ri-date">📅 ${e.date}</div>
-          </div>
+      ${g.items.map(e=>{const c=CATS[e.category]||CATS.general;const st=e.studentId?S.find(s=>s.id===e.studentId):null;
+        return`<div class="ritem" style="border-left-color:${c.c}"><span style="font-size:13px;flex-shrink:0">${c.i}</span>
+          <div style="flex:1;min-width:0"><div class="ri-text">${esc(e.text)}</div>${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}<div class="ri-date">📅 ${e.date}</div></div>
           ${!e.fromNote?`<button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0">✕</button>`:''}
-        </div>`;
-      }).join('')}
+        </div>`;}).join('')}
     </div>`;
   }).join('')}</div>`;
 }
 
 /* ═══ INIT ═══ */
-initFB();
-render();
+initFB(); render(); renderPay();
 </script>
 </body>
 </html>
