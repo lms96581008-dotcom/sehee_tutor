@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📚 Sehee Tutor Dashboard</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#F4F5F7;font-family:'Inter','Noto Sans KR',sans-serif;color:#1A202C;min-height:100vh;}
+::placeholder{color:#C4CCDA;}
+input,textarea,button,select{font-family:inherit;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#6366F1!important;box-shadow:0 0 0 3px rgba(99,102,241,.1)!important;}
+button{cursor:pointer;transition:all .15s;}
+button:active{transform:scale(.97);}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}
+a{color:#6366F1;}
+input[type=date]{color-scheme:light;}
+
+/* ── HEADER ── */
+.hdr{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;position:sticky;top:0;z-index:200;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.hdr-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:14px;height:62px;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.logo-title{font-size:18px;font-weight:800;color:#1A202C;letter-spacing:-.3px;}
+.logo-sub{font-size:11px;color:#94A3B8;font-weight:500;}
+.sync-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid;}
+.sync-pill.local{background:#F8FAFC;border-color:#E2E8F0;color:#64748B;}
+.sync-pill.saving{background:#FFFBEB;border-color:#FCD34D;color:#92400E;}
+.sync-pill.saved{background:#F0FDF4;border-color:#86EFAC;color:#166534;}
+.sync-pill.error{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}
+.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.btn-ghost{background:white;border:1.5px solid #E2E8F0;border-radius:9px;padding:6px 13px;font-size:12px;color:#475569;font-weight:600;}
+.btn-ghost:hover{background:#F8FAFC;border-color:#CBD5E1;}
+
+/* ── TABS ── */
+.tab-bar{background:white;border-bottom:1.5px solid #EAECF0;padding:0 24px;}
+.tab-bar-in{max-width:1400px;margin:0 auto;display:flex;gap:4px;}
+.tab-btn{padding:13px 18px;font-size:13px;font-weight:600;color:#94A3B8;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.on{color:#6366F1;border-bottom-color:#6366F1;}
+.tab-btn:hover:not(.on){color:#475569;}
+
+/* ── MAIN ── */
+.main{max-width:1400px;margin:0 auto;padding:22px 24px 60px;}
+
+/* ── TODAY ALERT ── */
+.today-alert{background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1.5px solid #C7D2FE;border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+.ta-title{font-size:13px;font-weight:700;color:#4338CA;margin-bottom:3px;}
+.ta-body{font-size:12px;color:#4F46E5;line-height:1.7;}
+
+/* ── STATS ── */
+.stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.stat-box{background:white;border-radius:14px;padding:14px 18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);flex:1;min-width:110px;}
+.stat-n{font-size:22px;font-weight:800;}
+.stat-u{font-size:11px;color:#94A3B8;font-weight:600;margin-left:2px;}
+.stat-l{font-size:10px;color:#94A3B8;margin-top:3px;font-weight:500;}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap;}
+.srch{position:relative;flex:1;max-width:260px;}
+.srch-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8;pointer-events:none;}
+.srch-input{width:100%;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px 9px 32px;font-size:13px;color:#1A202C;}
+.btn-add{background:#6366F1;border:none;border-radius:10px;padding:9px 18px;font-size:13px;color:white;font-weight:700;box-shadow:0 4px 12px rgba(99,102,241,.25);}
+.btn-add:hover{background:#5254D4;transform:translateY(-1px);}
+
+/* ── POST-IT GRID ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px;}
+
+/* ── POST-IT CARD ── */
+.pcard{border-radius:12px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);position:relative;display:flex;flex-direction:column;gap:11px;transition:transform .2s,box-shadow .2s;}
+.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.05);}
+.pcard::after{content:'';position:absolute;bottom:0;right:0;width:20px;height:20px;background:linear-gradient(225deg,rgba(0,0,0,.09) 50%,transparent 50%);border-radius:0 0 12px 0;}
+
+/* Card header */
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.cn{flex:1;min-width:0;}
+.nkr{font-size:16px;font-weight:800;color:#1A202C;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nen{font-size:12px;color:#64748B;font-weight:500;margin-top:2px;}
+.rbadge{font-size:11px;font-weight:700;color:white;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+
+/* Reminder badge */
+.rem-badge{font-size:10px;font-weight:700;background:rgba(99,102,241,.12);color:#4F46E5;border-radius:20px;padding:2px 7px;cursor:pointer;}
+
+/* Payment chips */
+.pay-row{display:flex;gap:6px;flex-wrap:wrap;}
+.pchip{display:flex;align-items:center;gap:4px;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .18s;user-select:none;flex:1;justify-content:center;}
+.pchip:hover{filter:brightness(.97);}
+
+/* Notes area */
+.notes-area{display:flex;flex-direction:column;gap:6px;min-height:32px;}
+.ni{border-radius:8px;padding:8px 10px;position:relative;cursor:default;}
+.ni:hover .nibtn{opacity:1!important;}
+.ni-text{font-size:12px;color:#1A202C;font-weight:500;line-height:1.5;}
+.ni-date{font-size:10px;font-weight:600;margin-top:3px;}
+.nibtn{position:absolute;top:5px;right:6px;display:flex;gap:3px;opacity:0;transition:opacity .15s;}
+.nibtn button{border:none;border-radius:5px;padding:2px 6px;font-size:10px;}
+.no-notes{font-size:11px;color:#94A3B8;text-align:center;padding:8px 0;}
+.btn-addnote{width:100%;background:rgba(0,0,0,.04);border:1.5px dashed rgba(0,0,0,.12);border-radius:8px;padding:7px;font-size:11px;color:#64748B;font-weight:600;transition:all .15s;}
+.btn-addnote:hover{background:rgba(0,0,0,.07);}
+.cf{display:flex;justify-content:flex-end;}
+.btn-del-card{background:none;border:none;font-size:13px;color:#CBD5E1;padding:3px 6px;border-radius:5px;}
+.btn-del-card:hover{color:#F87171;}
+
+/* Note form */
+.nform{background:rgba(255,255,255,.85);border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:10px 11px;}
+.cpills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;}
+.cpill{border-radius:20px;padding:3px 9px;font-size:10px;font-weight:600;border:1.5px solid;cursor:pointer;transition:all .15s;}
+.nta{width:100%;background:white;border:1px solid #E2E8F0;border-radius:7px;padding:6px 9px;font-size:12px;resize:vertical;min-height:50px;color:#1A202C;line-height:1.5;}
+.nfrow{display:flex;gap:6px;align-items:center;margin-top:6px;}
+.ndi{flex:1;border:1px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:11px;color:#64748B;background:white;}
+.btn-ns{background:#6366F1;border:none;border-radius:7px;padding:6px 13px;font-size:11px;color:white;font-weight:700;}
+.btn-nc{background:#F1F5F9;border:none;border-radius:7px;padding:6px 10px;font-size:11px;color:#64748B;font-weight:600;}
+
+/* ── CALENDAR TAB ── */
+.cal-layout{display:grid;grid-template-columns:1fr 310px;gap:18px;}
+.cal-box{background:white;border-radius:16px;padding:24px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.cal-title{font-size:18px;font-weight:800;color:#1A202C;flex:1;}
+.cal-nbtn{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:6px 13px;font-size:14px;color:#475569;font-weight:700;}
+.cal-nbtn:hover{background:#F1F5F9;}
+.cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+.cal-hd{text-align:center;font-size:11px;font-weight:700;color:#94A3B8;padding:4px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cday{min-height:76px;background:#FAFAFA;border-radius:10px;padding:7px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;position:relative;}
+.cday:hover{background:#F1F5F9;border-color:#E2E8F0;}
+.cday.today{background:#EEF2FF;border-color:#A5B4FC;}
+.cday.other{opacity:.32;}
+.cday.hase{border-color:#C7D2FE;}
+.cdnum{font-size:12px;font-weight:600;color:#475569;margin-bottom:3px;}
+.cday.today .cdnum{background:#6366F1;color:white;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
+.cevents{display:flex;flex-direction:column;gap:2px;}
+.cetag{font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;}
+.cmore{font-size:9px;color:#94A3B8;font-weight:600;}
+
+/* Sidebar */
+.sb{background:white;border-radius:16px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow-y:auto;max-height:620px;}
+.sb-title{font-size:13px;font-weight:700;color:#1A202C;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.ritem{background:#F8FAFC;border-radius:9px;padding:9px 11px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start;border:1px solid #F1F5F9;border-left:3px solid;}
+.ri-text{font-size:12px;color:#334155;font-weight:500;line-height:1.4;}
+.ri-stu{font-size:10px;color:#6366F1;font-weight:600;margin-top:2px;}
+.ri-date{font-size:10px;color:#94A3B8;font-weight:600;margin-top:1px;}
+.sb-empty{font-size:12px;color:#94A3B8;text-align:center;padding:24px 0;line-height:1.8;}
+
+/* ── REMINDERS TAB ── */
+.rtab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.rmc{background:white;border-radius:14px;padding:18px;border:1px solid #F1F5F9;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.rmc-hdr{font-size:13px;font-weight:800;color:#1A202C;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.rmc-now{background:#EEF2FF;color:#6366F1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.rmc-past{font-size:10px;color:#94A3B8;}
+
+/* ── MODALS ── */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;backdrop-filter:blur(3px);}
+.mbox{background:white;border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.15);width:100%;}
+.mtitle{font-size:16px;font-weight:800;color:#1A202C;margin-bottom:3px;}
+.msub{font-size:12px;color:#94A3B8;margin-bottom:20px;}
+.fg{margin-bottom:13px;}
+.fl{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+.fi{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 13px;font-size:13px;color:#1A202C;}
+.fi:focus{background:white;}
+.ma{display:flex;gap:8px;margin-top:6px;}
+.btn-mp{flex:1;background:#6366F1;border:none;border-radius:11px;padding:11px 0;color:white;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(99,102,241,.25);}
+.btn-mp:hover{background:#5254D4;}
+.btn-ms{background:#F1F5F9;border:none;border-radius:11px;padding:11px 18px;color:#64748B;font-weight:600;font-size:13px;}
+.btn-ms:hover{background:#E2E8F0;}
+
+.fb-note{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:11px 14px;font-size:12px;color:#166534;margin-bottom:14px;line-height:1.7;}
+.fb-steps{font-size:12px;color:#475569;line-height:1.9;margin-bottom:14px;}
+code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo-icon">📚</div>
+    <div>
+      <div class="logo-title">Sehee Tutor</div>
+      <div class="logo-sub">Student Dashboard</div>
+    </div>
+    <span id="sync-pill" class="sync-pill local">💾 로컬 저장</span>
+    <div class="hdr-right">
+      <button class="btn-ghost" onclick="openM('mfb')">☁️ Firebase</button>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <div class="tab-bar-in">
+    <button class="tab-btn on" onclick="tab('students',this)">📋 학생 관리</button>
+    <button class="tab-btn"    onclick="tab('calendar',this)">📅 캘린더</button>
+    <button class="tab-btn"    onclick="tab('reminders',this)">📌 리마인더</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div id="today-alert" style="display:none"></div>
+
+  <!-- TAB: STUDENTS -->
+  <div id="t-students">
+    <div class="stats-row" id="stats-row"></div>
+    <div class="toolbar">
+      <div class="srch"><span class="srch-icon">🔍</span><input class="srch-input" id="srch" placeholder="학생 검색…" oninput="onSearch(this.value)"></div>
+      <button class="btn-add" onclick="openM('mstu')">+ 학생 추가</button>
+    </div>
+    <div id="pgrid" class="pgrid"></div>
+  </div>
+
+  <!-- TAB: CALENDAR -->
+  <div id="t-calendar" style="display:none">
+    <div class="cal-layout">
+      <div class="cal-box">
+        <div class="cal-nav">
+          <button class="cal-nbtn" onclick="calGo(-1)">‹</button>
+          <div class="cal-title" id="cal-title"></div>
+          <button class="cal-nbtn" onclick="calGo(1)">›</button>
+          <button class="cal-nbtn" style="font-size:11px" onclick="calNow()">오늘</button>
+        </div>
+        <div class="cal-hdr">
+          <div class="cal-hd" style="color:#EF4444">일</div>
+          <div class="cal-hd">월</div><div class="cal-hd">화</div><div class="cal-hd">수</div>
+          <div class="cal-hd">목</div><div class="cal-hd">금</div>
+          <div class="cal-hd" style="color:#3B82F6">토</div>
+        </div>
+        <div id="cal-grid" class="cal-grid"></div>
+      </div>
+      <div class="sb">
+        <div class="sb-title">📌 <span id="sb-month"></span> 일정</div>
+        <div id="sb-events"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: REMINDERS -->
+  <div id="t-reminders" style="display:none">
+    <div id="rtab"></div>
+  </div>
+</div>
+
+<!-- MODAL: ADD STUDENT -->
+<div id="mstu" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mstu')">
+  <div class="mbox" style="max-width:370px" onclick="event.stopPropagation()">
+    <div class="mtitle">+ 새 학생 추가</div><div class="msub">학생 정보를 입력해 주세요</div>
+    <div class="fg"><div class="fl">한국 이름</div><input class="fi" id="skr" placeholder="예: 홍길동" onkeydown="if(event.key==='Enter')doAddStu()"></div>
+    <div class="fg"><div class="fl">영어 이름</div><input class="fi" id="sen" placeholder="예: Gildong" onkeydown="if(event.key==='Enter')doAddStu()"></div>
+    <div class="fg"><div class="fl">시급 (만원)</div><input class="fi" id="srate" type="number" min="1" placeholder="예: 9" onkeydown="if(event.key==='Enter')doAddStu()"></div>
+    <div class="ma">
+      <button class="btn-mp" onclick="doAddStu()">추가</button>
+      <button class="btn-ms" onclick="closeM('mstu')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD EVENT -->
+<div id="mev" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mev')">
+  <div class="mbox" style="max-width:380px" onclick="event.stopPropagation()">
+    <div class="mtitle" id="ev-title">📅 일정 추가</div><div class="msub" id="ev-sub"></div>
+    <div class="fg"><div class="fl">날짜</div><input class="fi" id="ev-date" type="date"></div>
+    <div class="fg"><div class="fl">내용</div><input class="fi" id="ev-text" placeholder="예: KIS 판교 입학 면접" onkeydown="if(event.key==='Enter')doAddEvent()"></div>
+    <div class="fg"><div class="fl">학생 (선택)</div><select class="fi" id="ev-stu"></select></div>
+    <div class="fg"><div class="fl">카테고리</div><div id="ev-cats" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px"></div></div>
+    <div class="ma">
+      <button class="btn-mp" onclick="doAddEvent()">저장</button>
+      <button class="btn-ms" onclick="closeM('mev')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: FIREBASE -->
+<div id="mfb" class="mbg" style="display:none" onclick="if(event.target===this)closeM('mfb')">
+  <div class="mbox" style="max-width:500px;max-height:88vh;overflow-y:auto" onclick="event.stopPropagation()">
+    <div class="mtitle">☁️ Firebase 자동저장 설정</div>
+    <div class="msub">구글 독스처럼 실시간 자동 저장 + 멀티 기기 동기화</div>
+    <div class="fb-note">✅ Firebase 없이도 로컬 저장으로 정상 작동합니다. Firebase는 여러 기기(PC + 폰)에서 동기화할 때 유용해요.</div>
+    <div class="fb-steps">
+      1. <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> 접속<br>
+      2. 새 프로젝트 생성 → Firestore Database 활성화<br>
+      3. 프로젝트 설정 → 웹 앱 추가 → config 복사<br>
+      4. Firestore 규칙: <code>allow read, write: if true;</code> 설정
+    </div>
+    <div class="fg"><div class="fl">Firebase Config (JSON 형식)</div>
+      <textarea class="fi" id="fb-cfg" rows="7" style="font-size:11px;font-family:monospace;resize:vertical" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
+    </div>
+    <div class="ma">
+      <button class="btn-mp" onclick="doFbSave()">연결하기</button>
+      <button class="btn-ms" onclick="doFbDisconnect()">연결 해제</button>
+      <button class="btn-ms" onclick="closeM('mfb')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ CONSTANTS ═══ */
+const PC = [
+  {bg:'#FFDDE8',bd:'#FFC2D4',acc:'#C2185B'},
+  {bg:'#BFE3FF',bd:'#93CAFF',acc:'#1565C0'},
+  {bg:'#FFF9C4',bd:'#FFF176',acc:'#827717'},
+  {bg:'#E8D5F5',bd:'#CEB4E8',acc:'#6A1B9A'},
+  {bg:'#C8F5D5',bd:'#9FE8B7',acc:'#2E7D32'},
+  {bg:'#FFE4B5',bd:'#FFCC80',acc:'#BF360C'},
+  {bg:'#B8F0E8',bd:'#7FE0D0',acc:'#00695C'},
+];
+
+const CATS = {
+  exam:    {i:'📝',l:'시험·테스트',bg:'#FFECEC',bd:'#FFCDD2',c:'#C62828'},
+  class:   {i:'📚',l:'수업내용',   bg:'#E3F2FD',bd:'#BBDEFB',c:'#1565C0'},
+  goal:    {i:'🎯',l:'목표·준비',  bg:'#F3E5F5',bd:'#E1BEE7',c:'#6A1B9A'},
+  general: {i:'📌',l:'일반메모',   bg:'#FFFDE7',bd:'#FFF9C4',c:'#F57F17'},
+};
+
+const CHIP_C={13:'#7C3AED',10:'#0284C7',9:'#0891B2',8:'#059669',7:'#D97706',6:'#EA580C',5:'#64748B'};
+const rC=r=>CHIP_C[r]||CHIP_C[5];
+const MO=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+const INIT=[
+  {id:'1',kr:'추헨리 & 추엘리',en:'Henry & Ellie',rate:13,ci:0},
+  {id:'2',kr:'최용준',en:'Jun',rate:10,ci:1},{id:'3',kr:'정예교 & 정인교',en:'Eli & Eddy',rate:10,ci:2},
+  {id:'4',kr:'최호재',en:'Hojae',rate:10,ci:3},{id:'5',kr:'이안',en:'Ian',rate:9,ci:4},
+  {id:'6',kr:'신소희',en:'Sohee',rate:9,ci:5},{id:'7',kr:'이윤진',en:'Yoonjin',rate:9,ci:6},
+  {id:'8',kr:'이시안',en:'Cian',rate:9,ci:0},{id:'9',kr:'김무이',en:'Mui',rate:8,ci:1},
+  {id:'10',kr:'김준상',en:'William',rate:8,ci:2},{id:'11',kr:'최은빈',en:'Eunbin',rate:8,ci:3},
+  {id:'12',kr:'신서희',en:'Riley',rate:8,ci:4},{id:'13',kr:'이승원',en:'David',rate:8,ci:5},
+  {id:'14',kr:'박민',en:'Min',rate:8,ci:6},{id:'15',kr:'도온',en:'On',rate:8,ci:0},
+  {id:'16',kr:'도윤',en:'Yoon',rate:8,ci:1},{id:'17',kr:'권서하',en:'Seoha',rate:8,ci:2},
+  {id:'18',kr:'전시우',en:'Daniel',rate:7,ci:3},{id:'19',kr:'박재민',en:'Terence',rate:7,ci:4},
+  {id:'20',kr:'박지아',en:'Jia',rate:7,ci:5},{id:'21',kr:'이윤성',en:'Yoonsung',rate:7,ci:6},
+  {id:'22',kr:'박유민',en:'Yoomin',rate:7,ci:0},{id:'23',kr:'김루카스지원',en:'Lucas',rate:7,ci:1},
+  {id:'24',kr:'임라희',en:'Rahee',rate:7,ci:2},{id:'25',kr:'양승원',en:'Sally',rate:7,ci:3},
+  {id:'26',kr:'우세연',en:'Elena',rate:7,ci:4},{id:'27',kr:'서지우',en:'Jiwoo',rate:7,ci:5},
+  {id:'28',kr:'이제인',en:'Jane',rate:7,ci:6},{id:'29',kr:'서병우',en:'Byeongwoo',rate:7,ci:0},
+  {id:'30',kr:'김태연',en:'Ashley',rate:6,ci:1},{id:'31',kr:'이토니',en:'Tony',rate:6,ci:2},
+  {id:'32',kr:'김지윤',en:'Joann',rate:6,ci:3},{id:'33',kr:'김은재',en:'Edward',rate:6,ci:4},
+  {id:'34',kr:'안세연',en:'Ceyon',rate:6,ci:5},{id:'35',kr:'김태균',en:'Ethan',rate:5,ci:6},
+];
+
+const uid=()=>`${Date.now()}${Math.random().toString(36).slice(2,5)}`;
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const nd=new Date();
+const MK=`${nd.getFullYear()}_${String(nd.getMonth()+1).padStart(2,'0')}`;
+const todayStr=`${nd.getFullYear()}-${String(nd.getMonth()+1).padStart(2,'0')}-${String(nd.getDate()).padStart(2,'0')}`;
+
+/* ═══ STATE ═══ */
+let S=JSON.parse(localStorage.getItem('v2_s')||'null')||INIT;
+let N=JSON.parse(localStorage.getItem('v2_n')||'{}');
+let P=JSON.parse(localStorage.getItem('v2_p_'+MK)||'{}');
+let CAL=JSON.parse(localStorage.getItem('v2_c')||'{}');
+
+let addNF=null,editNR=null,selCat={},activeTab='students',srch='';
+let calM=new Date(nd.getFullYear(),nd.getMonth(),1);
+let evCat='general',db=null,saveT=null;
+
+/* ═══ FIREBASE ═══ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyB9dRh77_GKbTVQkSEeuzIUaLyOzlg5NOo",
+  authDomain: "student-management-abe1e.firebaseapp.com",
+  projectId: "student-management-abe1e",
+  storageBucket: "student-management-abe1e.firebasestorage.app",
+  messagingSenderId: "243422354779",
+  appId: "1:243422354779:web:9b42c57dec2c9644058e7e",
+  measurementId: "G-QFNE85QQEZ"
+};
+
+function initFB(){
+  if(typeof firebase==='undefined') return;
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    db=firebase.firestore();
+    loadFB();
+    setSP('saved','☁️ Firebase 연결됨');
+  }catch(e){setSP('error','Firebase 오류');console.error(e);}
+}
+async function loadFB(){
+  if(!db) return;
+  const col=db.collection('sehee');
+  const snap=await col.doc('main').get().catch(()=>null);
+  if(snap&&snap.exists){
+    const d=snap.data();
+    if(d.s) S=d.s;
+    if(d.n) N=d.n;
+    if(d.c) CAL=d.c;
+    if(d['p_'+MK]) P=d['p_'+MK];
+    saveLocal(); render(); renderCal(); renderRTab();
+  }
+}
+async function fbSave(){
+  saveLocal();
+  if(!db){setSP('local','💾 저장됨');return;}
+  try{
+    setSP('saving','✏️ 저장 중…');
+    await db.collection('sehee').doc('main').set({s:S,n:N,c:CAL,['p_'+MK]:P},{merge:true});
+    setSP('saved','☁️ 저장됨');
+  }catch(e){setSP('error','저장 오류');}
+}
+function sched(){clearTimeout(saveT);setSP('saving','✏️ 저장 중…');saveT=setTimeout(fbSave,900);}
+function saveLocal(){
+  localStorage.setItem('v2_s',JSON.stringify(S));
+  localStorage.setItem('v2_n',JSON.stringify(N));
+  localStorage.setItem('v2_p_'+MK,JSON.stringify(P));
+  localStorage.setItem('v2_c',JSON.stringify(CAL));
+}
+function setSP(t,txt){const e=document.getElementById('sync-pill');if(e){e.className='sync-pill '+t;e.textContent=txt;}}
+function doFbSave(){ closeM('mfb'); }
+function doFbDisconnect(){ closeM('mfb'); }
+
+/* ═══ STUDENT OPS ═══ */
+function doAddStu(){
+  const kr=document.getElementById('skr').value.trim();
+  const en=document.getElementById('sen').value.trim();
+  const rate=+document.getElementById('srate').value;
+  if(!kr||!en||!rate) return;
+  S.push({id:uid(),kr,en,rate,ci:S.length%PC.length});
+  ['skr','sen','srate'].forEach(id=>document.getElementById(id).value='');
+  closeM('mstu'); sched(); render();
+}
+function delStu(id){
+  if(!confirm('이 학생을 삭제할까요?')) return;
+  S=S.filter(s=>s.id!==id); delete N[id]; delete P[id];
+  sched(); render();
+}
+
+/* ═══ NOTE OPS ═══ */
+function openNF(sid){addNF=sid;editNR=null;selCat[sid]='general';render();}
+function openEN(sid,nid){editNR={sid,nid};addNF=null;const n=(N[sid]||[]).find(x=>x.id===nid);if(n)selCat[sid]=n.category||'general';render();}
+function cancelNF(){addNF=null;editNR=null;render();}
+function doAN(sid){
+  const t=(document.getElementById('nt-'+sid)||{}).value?.trim();
+  const d=(document.getElementById('nd-'+sid)||{}).value;
+  const c=selCat[sid]||'general';
+  if(!t) return;
+  if(!N[sid])N[sid]=[];
+  N[sid].push({id:uid(),text:t,date:d||null,category:c,ts:Date.now()});
+  addNF=null; sched(); render();
+}
+function doUN(sid,nid){
+  const t=(document.getElementById('nt-'+sid)||{}).value?.trim();
+  const d=(document.getElementById('nd-'+sid)||{}).value;
+  const c=selCat[sid]||'general';
+  if(!t) return;
+  if(N[sid]) N[sid]=N[sid].map(n=>n.id===nid?{...n,text:t,date:d||null,category:c}:n);
+  editNR=null; sched(); render();
+}
+function delN(sid,nid){
+  if(N[sid]) N[sid]=N[sid].filter(n=>n.id!==nid);
+  sched(); render();
+}
+function setCat(sid,cat){
+  selCat[sid]=cat;
+  const row=document.getElementById('cr-'+sid); if(!row) return;
+  row.dataset.sel=cat;
+  row.querySelectorAll('.cpill').forEach(b=>{
+    const k=b.dataset.cat,v=CATS[k],on=k===cat;
+    b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';
+  });
+}
+
+/* ═══ PAYMENT OPS ═══ */
+function togP(sid,type){
+  if(!P[sid])P[sid]={paid:false,msgSent:false};
+  P[sid][type]=!P[sid][type]; sched();
+  const paid=P[sid].paid,msg=P[sid].msgSent;
+  ['pay','msg'].forEach(t=>{
+    const e=document.getElementById('pc-'+t+'-'+sid); if(e) e.outerHTML=buildPC(sid,t);
+  });
+  updateStats();
+}
+
+/* ═══ CALENDAR OPS ═══ */
+function openEv(ds){
+  evCat='general';
+  document.getElementById('ev-date').value=ds||'';
+  document.getElementById('ev-text').value='';
+  document.getElementById('ev-sub').textContent=ds?`날짜: ${ds}`:'날짜를 입력해 주세요';
+  const sel=document.getElementById('ev-stu');
+  sel.innerHTML='<option value="">-- 일반 일정 --</option>'+S.map(s=>`<option value="${s.id}">${esc(s.kr)} (${esc(s.en)})</option>`).join('');
+  document.getElementById('ev-cats').innerHTML=Object.entries(CATS).map(([k,v])=>`
+    <button class="cpill" data-cat="${k}" onclick="evCat='${k}';updEvCats()"
+      style="background:${k==='general'?v.bg:'white'};border-color:${k==='general'?v.bd:'#E2E8F0'};color:${k==='general'?v.c:'#94A3B8'}">
+      ${v.i} ${v.l}</button>`).join('');
+  openM('mev'); setTimeout(()=>document.getElementById('ev-text').focus(),60);
+}
+function updEvCats(){
+  document.getElementById('ev-cats').querySelectorAll('.cpill').forEach(b=>{
+    const k=b.dataset.cat,v=CATS[k],on=k===evCat;
+    b.style.background=on?v.bg:'white'; b.style.borderColor=on?v.bd:'#E2E8F0'; b.style.color=on?v.c:'#94A3B8';
+  });
+}
+function doAddEvent(){
+  const dt=document.getElementById('ev-date').value;
+  const tx=document.getElementById('ev-text').value.trim();
+  const si=document.getElementById('ev-stu').value;
+  if(!dt||!tx) return;
+  if(!CAL[dt]) CAL[dt]=[];
+  CAL[dt].push({id:uid(),text:tx,studentId:si||null,category:evCat||'general',ts:Date.now()});
+  closeM('mev'); sched(); renderCal(); renderRTab();
+}
+function delEv(ds,eid){
+  if(CAL[ds]) CAL[ds]=CAL[ds].filter(e=>e.id!==eid);
+  sched(); renderCal(); renderRTab();
+}
+function calGo(d){calM=new Date(calM.getFullYear(),calM.getMonth()+d,1);renderCal();}
+function calNow(){calM=new Date(nd.getFullYear(),nd.getMonth(),1);renderCal();}
+
+/* ═══ MODAL ═══ */
+function openM(id){const e=document.getElementById(id);if(e)e.style.display='flex';}
+function closeM(id){const e=document.getElementById(id);if(e)e.style.display='none';}
+
+/* ═══ TABS ═══ */
+function tab(t,btn){
+  activeTab=t;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['students','calendar','reminders'].forEach(x=>document.getElementById('t-'+x).style.display=x===t?'block':'none');
+  if(t==='calendar') renderCal();
+  if(t==='reminders') renderRTab();
+}
+function onSearch(v){srch=v;render();}
+
+/* ═══ BUILDERS ═══ */
+function buildPC(sid,type){
+  const py=P[sid]||{paid:false,msgSent:false};
+  const on=type==='pay'?py.paid:py.msgSent;
+  const [yl,nl,field]=type==='pay'?['✓ 입금','미입금','paid']:['✉️ 전송','미전송','msgSent'];
+  const [ys,ns]=type==='pay'
+    ?['background:#D1FAE5;border-color:#6EE7B7;color:#065F46','background:#FFFBEB;border-color:#FCD34D;color:#92400E']
+    :['background:#DBEAFE;border-color:#93C5FD;color:#1E40AF','background:#F1F5F9;border-color:#CBD5E1;color:#64748B'];
+  return `<div id="pc-${type}-${sid}" class="pchip" onclick="togP('${sid}','${field}')" style="${on?ys:ns}">${on?yl:nl}</div>`;
+}
+
+function buildCR(sid,sel){
+  const s=sel||'general';
+  return `<div class="cpills" id="cr-${sid}" data-sel="${s}">
+    ${Object.entries(CATS).map(([k,v])=>`
+      <button class="cpill" data-cat="${k}" onclick="setCat('${sid}','${k}')"
+        style="background:${k===s?v.bg:'white'};border-color:${k===s?v.bd:'#E2E8F0'};color:${k===s?v.c:'#94A3B8'}">
+        ${v.i} ${v.l}</button>`).join('')}
+  </div>`;
+}
+
+function buildNF(sid,init){
+  const act=init?`doUN('${sid}','${init.id}')`:`doAN('${sid}')`;
+  return `<div class="nform">
+    ${buildCR(sid,init?.category)}
+    <textarea class="nta" id="nt-${sid}" placeholder="메모 내용 입력…">${esc(init?.text||'')}</textarea>
+    <div class="nfrow">
+      <input type="date" class="ndi" id="nd-${sid}" value="${init?.date||''}">
+      <button class="btn-ns" onclick="${act}">저장</button>
+      <button class="btn-nc" onclick="cancelNF()">✕</button>
+    </div>
+  </div>`;
+}
+
+function buildNC(sid,n){
+  const isE=editNR?.sid===sid&&editNR?.nid===n.id;
+  if(isE) return buildNF(sid,n);
+  const c=CATS[n.category]||CATS.general;
+  return `<div class="ni" style="background:${c.bg};border:1px solid ${c.bd}">
+    <div class="ni-text">${c.i} ${esc(n.text)}</div>
+    ${n.date?`<div class="ni-date" style="color:${c.c}">📅 ${n.date}</div>`:''}
+    <div class="nibtn">
+      <button onclick="openEN('${sid}','${n.id}')" style="background:rgba(0,0,0,.06);color:#475569">✏️</button>
+      <button onclick="delN('${sid}','${n.id}')" style="background:rgba(220,38,38,.08);color:#DC2626">✕</button>
+    </div>
+  </div>`;
+}
+
+function buildCard(s,idx){
+  const c=PC[s.ci!==undefined?s.ci:idx%PC.length];
+  const sN=N[s.id]||[];
+  const isA=addNF===s.id;
+  // Upcoming reminders count
+  const remCnt=[...sN.filter(n=>n.date&&n.date>=todayStr),...Object.entries(CAL).flatMap(([d,ev])=>ev.filter(e=>e.studentId===s.id&&d>=todayStr))].length;
+  
+  return `<div class="pcard" style="background:${c.bg};border:1.5px solid ${c.bd}">
+    <div class="ch">
+      <div class="cn">
+        <div class="nkr">${esc(s.kr)}</div>
+        <div class="nen">${esc(s.en)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <span class="rbadge" style="background:${c.bg};color:${c.acc};border:1.5px solid ${c.bd}">${s.rate}만원</span>
+        ${remCnt>0?`<span class="rem-badge" onclick="tab('reminders',document.querySelectorAll('.tab-btn')[2])">📅 ${remCnt}</span>`:''}
+      </div>
+    </div>
+    <div class="pay-row">
+      ${buildPC(s.id,'msg')}
+      ${buildPC(s.id,'pay')}
+    </div>
+    <div class="notes-area">
+      ${isA?buildNF(s.id,null):''}
+      ${sN.length===0&&!isA?'<div class="no-notes">메모 없음</div>':''}
+      ${sN.map(n=>buildNC(s.id,n)).join('')}
+    </div>
+    ${!isA?`<button class="btn-addnote" onclick="openNF('${s.id}')">+ 메모 추가</button>`:''}
+    <div class="cf"><button class="btn-del-card" onclick="delStu('${s.id}')" title="학생 삭제">🗑</button></div>
+  </div>`;
+}
+
+/* ═══ STATS ═══ */
+function updateStats(){
+  const tot=S.length;
+  const avg=tot?(S.reduce((a,s)=>a+s.rate,0)/tot).toFixed(1):0;
+  const maxR=tot?Math.max(...S.map(s=>s.rate)):0;
+  const paidN=Object.values(P).filter(p=>p.paid).length;
+  const msgN =Object.values(P).filter(p=>p.msgSent).length;
+  document.getElementById('stats-row').innerHTML=[
+    {v:tot,u:'명',l:'총 학생',col:'#6366F1'},
+    {v:avg,u:'만원',l:'평균 시급',col:'#059669'},
+    {v:maxR,u:'만원',l:'최고 시급',col:'#7C3AED'},
+    {v:paidN+'/'+tot,u:'',l:'💰 입금 완료',col:paidN===tot&&tot>0?'#059669':'#D97706'},
+    {v:msgN+'/'+tot,u:'',l:'✉️ 정산문자 전송',col:msgN===tot&&tot>0?'#0891B2':'#94A3B8'},
+  ].map(x=>`<div class="stat-box"><div><span class="stat-n" style="color:${x.col}">${x.v}</span><span class="stat-u">${x.u}</span></div><div class="stat-l">${x.l}</div></div>`).join('');
+}
+
+/* ═══ TODAY ALERT ═══ */
+function renderAlert(){
+  const ev=CAL[todayStr]||[];
+  const el=document.getElementById('today-alert');
+  if(!ev.length){el.style.display='none';return;}
+  el.style.display='flex';
+  el.innerHTML=`<div style="font-size:20px">🔔</div>
+    <div>
+      <div class="ta-title">오늘의 일정 (${ev.length}개)</div>
+      <div class="ta-body">${ev.map(e=>{const st=e.studentId?S.find(s=>s.id===e.studentId):null;return(st?`[${esc(st.en)}] `:'')+esc(e.text);}).join('<br>')}</div>
+    </div>`;
+}
+
+/* ═══ RENDER STUDENTS ═══ */
+function render(){
+  const q=srch.toLowerCase();
+  const f=S.filter(s=>!q||s.kr.includes(q)||s.en.toLowerCase().includes(q)).sort((a,b)=>b.rate-a.rate);
+  document.getElementById('pgrid').innerHTML=f.length
+    ?f.map((s,i)=>buildCard(s,i)).join('')
+    :`<div style="grid-column:1/-1;text-align:center;padding:48px;background:white;border-radius:16px;color:#94A3B8;font-size:13px">검색 결과가 없습니다</div>`;
+  updateStats(); renderAlert();
+}
+
+/* ═══ RENDER CALENDAR ═══ */
+function renderCal(){
+  const y=calM.getFullYear(),m=calM.getMonth();
+  document.getElementById('cal-title').textContent=`${y}년 ${MO[m]}`;
+  document.getElementById('sb-month').textContent=MO[m];
+  const first=new Date(y,m,1).getDay();
+  const dim=new Date(y,m+1,0).getDate();
+  const total=Math.ceil((first+dim)/7)*7;
+  let html='';
+  for(let i=0;i<total;i++){
+    let dn,ds,om=false;
+    const col=i%7;
+    if(i<first){dn=new Date(y,m,0).getDate()-first+i+1;const pm=m===0?12:m,py=m===0?y-1:y;ds=`${py}-${String(pm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}
+    else if(i<first+dim){dn=i-first+1;ds=`${y}-${String(m+1).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;}
+    else{dn=i-first-dim+1;const nm=m===11?1:m+2,ny=m===11?y+1:y;ds=`${ny}-${String(nm).padStart(2,'0')}-${String(dn).padStart(2,'0')}`;om=true;}
+    const isT=!om&&ds===todayStr;
+    // Events for this day (cal + notes with date)
+    const cev=CAL[ds]||[];
+    const nev=S.flatMap(s=>(N[s.id]||[]).filter(n=>n.date===ds).map(n=>({...n,_student:s,fromNote:true})));
+    const allEv=[...cev,...nev];
+    const hasE=allEv.length>0;
+    html+=`<div class="cday${isT?' today':''}${om?' other':''}${hasE?' hase':''}" onclick="openEv('${ds}')">
+      <div class="cdnum" style="${!isT&&col===0?'color:#EF4444':!isT&&col===6?'color:#3B82F6':''}">${dn}</div>
+      <div class="cevents">
+        ${allEv.slice(0,2).map(e=>{const c=CATS[e.category]||CATS.general;return`<div class="cetag" style="background:${c.bg};color:${c.c};border:1px solid ${c.bd}">${c.i} ${esc((e.text||'').slice(0,9))}${(e.text||'').length>9?'…':''}</div>`;}).join('')}
+        ${allEv.length>2?`<div class="cmore">+${allEv.length-2}개</div>`:''}
+      </div>
+    </div>`;
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+  renderSB();
+}
+
+function renderSB(){
+  const y=calM.getFullYear(),m=calM.getMonth();
+  const evs=[];
+  for(const [ds,arr] of Object.entries(CAL)){
+    const d=new Date(ds+'T00:00:00');
+    if(d.getFullYear()===y&&d.getMonth()===m) arr.forEach(e=>evs.push({...e,date:ds,d}));
+  }
+  S.forEach(s=>(N[s.id]||[]).forEach(n=>{
+    if(n.date){const d=new Date(n.date+'T00:00:00');if(d.getFullYear()===y&&d.getMonth()===m)evs.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}
+  }));
+  evs.sort((a,b)=>a.d-b.d);
+  if(!evs.length){document.getElementById('sb-events').innerHTML=`<div class="sb-empty">이 달에 일정이 없습니다<br><small>날짜를 클릭하면 추가할 수 있어요</small></div>`;return;}
+  document.getElementById('sb-events').innerHTML=evs.map(e=>{
+    const c=CATS[e.category]||CATS.general;
+    const st=e.studentId?S.find(s=>s.id===e.studentId):null;
+    return`<div class="ritem" style="border-left-color:${c.c}">
+      <span style="font-size:14px;flex-shrink:0">${c.i}</span>
+      <div style="flex:1;min-width:0">
+        <div class="ri-text">${esc(e.text)}</div>
+        ${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}
+        <div class="ri-date">📅 ${e.date}</div>
+      </div>
+      ${!e.fromNote?`<button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0">✕</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* ═══ REMINDERS TAB ═══ */
+function renderRTab(){
+  const tm=nd.getMonth()+1,ty=nd.getFullYear();
+  const map={};
+  // Calendar events
+  for(const [ds,arr] of Object.entries(CAL)){
+    const d=new Date(ds+'T00:00:00');
+    const k=`${d.getFullYear()}_${d.getMonth()+1}`;
+    if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};
+    arr.forEach(e=>map[k].items.push({...e,date:ds,d}));
+  }
+  // Notes with dates
+  S.forEach(s=>(N[s.id]||[]).forEach(n=>{
+    if(n.date){const d=new Date(n.date+'T00:00:00');const k=`${d.getFullYear()}_${d.getMonth()+1}`;
+    if(!map[k]) map[k]={y:d.getFullYear(),m:d.getMonth()+1,items:[]};
+    map[k].items.push({...n,studentId:s.id,date:n.date,d,fromNote:true});}
+  }));
+  const keys=Object.keys(map).sort();
+  if(!keys.length){document.getElementById('rtab').innerHTML='<div style="text-align:center;padding:60px;color:#94A3B8;font-size:13px">📅 아직 일정이 없습니다<br><small style="display:block;margin-top:6px;font-size:11px">캘린더 탭에서 날짜를 클릭해 추가하거나,<br>학생 카드 메모에 날짜를 입력해 보세요!</small></div>';return;}
+  document.getElementById('rtab').innerHTML=`<div class="rtab-grid">${keys.map(k=>{
+    const g=map[k];
+    const isNow=g.y===ty&&g.m===tm;
+    const isPast=new Date(g.y,g.m-1)<new Date(ty,tm-1);
+    g.items.sort((a,b)=>a.d-b.d);
+    return`<div class="rmc" style="${isNow?'border:2px solid #A5B4FC':''}${isPast?'opacity:.55':''}">
+      <div class="rmc-hdr">${g.y}년 ${MO[g.m-1]} ${isNow?'<span class="rmc-now">이번 달 ★</span>':''} ${isPast?'<span class="rmc-past">(지난 달)</span>':''}</div>
+      ${g.items.map(e=>{
+        const c=CATS[e.category]||CATS.general;
+        const st=e.studentId?S.find(s=>s.id===e.studentId):null;
+        return`<div class="ritem" style="border-left-color:${c.c}">
+          <span style="font-size:13px;flex-shrink:0">${c.i}</span>
+          <div style="flex:1;min-width:0">
+            <div class="ri-text">${esc(e.text)}</div>
+            ${st?`<div class="ri-stu">${esc(st.kr)} · ${esc(st.en)}</div>`:''}
+            <div class="ri-date">📅 ${e.date}</div>
+          </div>
+          ${!e.fromNote?`<button onclick="delEv('${e.date}','${e.id}')" style="background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:13px;flex-shrink:0">✕</button>`:''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ═══ INIT ═══ */
+initFB();
+render();
+</script>
+</body>
+</html>
